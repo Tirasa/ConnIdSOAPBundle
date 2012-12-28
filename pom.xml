@@ -42,9 +42,9 @@
   <packaging>pom</packaging>
 
   <scm>
-    <connection>scm:svn:https://connid.googlecode.com/svn/bundles/soap/trunk/</connection>
-    <developerConnection>scm:svn:https://connid.googlecode.com/svn/bundles/soap/trunk/</developerConnection>
-    <url>https://connid.googlecode.com/svn/bundles/soap/trunk/</url>
+    <connection>scm:git:git@github.com:Tirasa/ConnIdSOAPBundle.git</connection>
+    <url>scm:git:git@github.com:Tirasa/ConnIdSOAPBundle.git</url>
+    <developerConnection>scm:git:git@github.com:Tirasa/ConnIdSOAPBundle.git</developerConnection>
   </scm>
 
   <properties>
