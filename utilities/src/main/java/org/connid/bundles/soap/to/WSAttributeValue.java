@@ -94,7 +94,7 @@ public class WSAttributeValue extends WSAttribute {
 
         String res;
 
-        if (values == null && values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             res = null;
         } else {
             res = values.iterator().next().toString();
@@ -110,7 +110,7 @@ public class WSAttributeValue extends WSAttribute {
 
         Boolean res;
 
-        if (values == null && values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             res = null;
         } else {
             res = (Boolean) values.iterator().next();
@@ -126,7 +126,7 @@ public class WSAttributeValue extends WSAttribute {
 
         Long res;
 
-        if (values == null && values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             res = null;
         } else {
             res = (Long) values.iterator().next();
@@ -142,7 +142,7 @@ public class WSAttributeValue extends WSAttribute {
 
         Float res;
 
-        if (values == null && values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             res = null;
         } else {
             res = (Float) values.iterator().next();
@@ -158,7 +158,7 @@ public class WSAttributeValue extends WSAttribute {
 
         Double res;
 
-        if (values == null && values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             res = null;
         } else {
             res = (Double) values.iterator().next();
@@ -174,7 +174,7 @@ public class WSAttributeValue extends WSAttribute {
 
         Integer res;
 
-        if (values == null && values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             res = null;
         } else {
             res = (Integer) values.iterator().next();
@@ -190,7 +190,7 @@ public class WSAttributeValue extends WSAttribute {
 
         Date res;
 
-        if (values == null && values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             res = null;
         } else {
             res = (Date) values.iterator().next();
@@ -206,7 +206,7 @@ public class WSAttributeValue extends WSAttribute {
 
         Character res;
 
-        if (values == null && values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             res = null;
         } else {
             res = (Character) values.iterator().next();
@@ -222,7 +222,7 @@ public class WSAttributeValue extends WSAttribute {
 
         URI res;
 
-        if (values == null && values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             res = null;
         } else {
             res = (URI) values.iterator().next();
@@ -238,7 +238,7 @@ public class WSAttributeValue extends WSAttribute {
 
         File res;
 
-        if (values == null && values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             res = null;
         } else {
             res = (File) values.iterator().next();
