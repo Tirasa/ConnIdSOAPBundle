@@ -471,7 +471,7 @@ public class WebServiceConnector implements
                 try {
                     handle = handler.handle(buildConnectorObject(user.getAttributes()).build());
                     LOG.ok("Handle: {0}", handle);
-                } catch (IllegalArgumentException e) {
+                } catch (Exception e) {
                     LOG.error("Error building connector object for {0}", user.getAccountid(), e);
                 }
             }
@@ -619,7 +619,7 @@ public class WebServiceConnector implements
                 try {
                     sdb = buildSyncDelta(change);
                     handle = handler.handle(sdb.build());
-                } catch (IllegalArgumentException e) {
+                } catch (Exception e) {
                     LOG.error("Error building connector object for change {0}", change.getId(), e);
                 }
             }
