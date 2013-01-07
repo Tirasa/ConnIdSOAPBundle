@@ -468,9 +468,12 @@ public class WebServiceConnector implements
                 user = i.next();
                 LOG.ok("Found user: " + user.getAccountid());
 
-                handle = handler.handle(buildConnectorObject(user.getAttributes()).build());
-
-                LOG.ok("Handle:" + handle);
+                try {
+                    handle = handler.handle(buildConnectorObject(user.getAttributes()).build());
+                    LOG.ok("Handle:" + handle);
+                } catch (IllegalArgumentException e) {
+                    LOG.error("Error building connector object for {}", user.getAccountid(), e);
+                }
             }
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
@@ -611,8 +614,14 @@ public class WebServiceConnector implements
             for (Iterator<WSChange> i = changes.iterator();
                     i.hasNext() && handle;) {
 
-                sdb = buildSyncDelta(i.next());
-                handle = handler.handle(sdb.build());
+                WSChange change = i.next();
+
+                try {
+                    sdb = buildSyncDelta(change);
+                    handle = handler.handle(sdb.build());
+                } catch (IllegalArgumentException e) {
+                    LOG.error("Error building connector object for change {}", change.getId(), e);
+                }
             }
         } catch (ProvisioningException e) {
             LOG.error("Synchronization failed");
