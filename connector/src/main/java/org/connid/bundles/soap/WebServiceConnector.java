@@ -437,7 +437,9 @@ public class WebServiceConnector implements
             final ResultsHandler handler,
             final OperationOptions options) {
 
-        LOG.ok("Execute query: " + query);
+        if (LOG.isOk()) {
+            LOG.ok("Execute query: " + query);
+        }
 
         // check objectclass
         if (objClass == null || (!objClass.equals(ObjectClass.ACCOUNT))) {
@@ -466,13 +468,16 @@ public class WebServiceConnector implements
             for (Iterator<WSUser> i = resultSet.iterator(); i.hasNext() && handle;) {
 
                 user = i.next();
-                LOG.ok("Found user: {0}", user.getAccountid());
+                
+                if (LOG.isOk()) {
+                    LOG.ok("Found user: {0}", user);
+                }
 
                 try {
                     handle = handler.handle(buildConnectorObject(user.getAttributes()).build());
                     LOG.ok("Handle: {0}", handle);
                 } catch (Exception e) {
-                    LOG.error("Error building connector object for {0}", user.getAccountid(), e);
+                    LOG.error(e, "Error building connector object for {0}", user);
                 }
             }
         } catch (Exception e) {
@@ -616,11 +621,15 @@ public class WebServiceConnector implements
 
                 WSChange change = i.next();
 
+                if (LOG.isOk()) {
+                    LOG.ok("Found change {0}", change);
+                }
+
                 try {
                     sdb = buildSyncDelta(change);
                     handle = handler.handle(sdb.build());
                 } catch (Exception e) {
-                    LOG.error("Error building connector object for change {0}", change.getId(), e);
+                    LOG.error(e, "Error building connector object for change {0}", change);
                 }
             }
         } catch (ProvisioningException e) {
