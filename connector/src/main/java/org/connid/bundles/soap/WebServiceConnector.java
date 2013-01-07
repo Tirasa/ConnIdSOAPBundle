@@ -806,9 +806,7 @@ public class WebServiceConnector implements
 
         if ("CREATE_OR_UPDATE".equalsIgnoreCase(change.getType())) {
             bld.setDeltaType(SyncDeltaType.CREATE_OR_UPDATE);
-        }
-
-        if ("DELETE".equalsIgnoreCase(change.getType())) {
+        } else if ("DELETE".equalsIgnoreCase(change.getType())) {
             bld.setDeltaType(SyncDeltaType.DELETE);
         }
 
