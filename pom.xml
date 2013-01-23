@@ -248,14 +248,6 @@
           <artifactId>maven-jetty-plugin</artifactId>
           <version>6.1.26</version>
         </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.3.2</version>
-          <configuration>
-            <tagBase>https://connid.googlecode.com/svn/bundles/soap/tags</tagBase>
-          </configuration>
-        </plugin>
       </plugins>
     </pluginManagement>
   </build>
