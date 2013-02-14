@@ -28,8 +28,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>connid</artifactId>
     <groupId>org.connid</groupId>
+    <artifactId>connid</artifactId>
     <version>1.3.3-SNAPSHOT</version>
   </parent>
 
@@ -63,10 +63,10 @@
   </issueManagement>
 
   <ciManagement>
-    <system>Jenkins</system>
-    <url>http://jenkins.tirasa.net/job/ConnId%20bundle%20SOAP%20(master)/</url>
+    <system>Travis CI</system>
+    <url>https://travis-ci.org/Tirasa/ConnIdSOAPBundle</url>
   </ciManagement>
-
+  
   <mailingLists>
     <mailingList>
       <name>connid-dev</name>
@@ -115,6 +115,24 @@
         <artifactId>jsp-api</artifactId>
         <version>${jsp-api.version}</version>
         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-activation_1.1_spec</artifactId>
+        <version>1.1</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.connid</groupId>
+        <artifactId>connid-framework</artifactId>
+        <version>${base.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.connid</groupId>
+        <artifactId>connid-framework-internal</artifactId>
+        <version>${base.version}</version>
       </dependency>
 
       <!-- CXF -->
@@ -200,6 +218,12 @@
       </dependency>
         
       <dependency>
+        <groupId>org.connid</groupId>
+        <artifactId>connid-test-common</artifactId>
+        <version>${base.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-test</artifactId>
         <version>${org.springframework.version}</version>
@@ -216,16 +240,16 @@
 
   <build>
     <pluginManagement>
-      <plugins>
+      <plugins>      
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>2.5</version>
+          <version>2.6</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.12</version>
+          <version>2.13</version>
           <configuration>
             <redirectTestOutputToFile>true</redirectTestOutputToFile>
           </configuration>
@@ -233,7 +257,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.12</version>
+          <version>2.13</version>
           <executions>
             <execution>
               <goals>
@@ -259,12 +283,16 @@
   </modules>
 
   <repositories>
-     <repository>
-        <id>sonatype</id>
-        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        <releases><enabled>false</enabled></releases>
-        <snapshots><enabled>true</enabled></snapshots>
-     </repository>
+    <repository>
+      <id>sonatype</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
 

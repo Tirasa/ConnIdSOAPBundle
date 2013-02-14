@@ -34,9 +34,9 @@ import org.identityconnectors.framework.common.FrameworkUtil;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WSAttributeValue extends WSAttribute {
 
-    private List values = null;
+    private List<Object> values = null;
 
-    private List evaluatedTypeValues = null;
+    private List<Object> evaluatedTypeValues = null;
 
     public WSAttributeValue() {
         super();
@@ -54,9 +54,9 @@ public class WSAttributeValue extends WSAttribute {
         }
     }
 
-    public List getValues() {
+    public List<Object> getValues() {
         if (this.values == null) {
-            this.values = new ArrayList();
+            this.values = new ArrayList<Object>();
         }
 
         if (evaluatedTypeValues == null) {
@@ -75,13 +75,13 @@ public class WSAttributeValue extends WSAttribute {
         return this.evaluatedTypeValues;
     }
 
-    public void setValues(final List values) {
+    public void setValues(final List<Object> values) {
         this.values = values;
     }
 
-    public final boolean addValue(Object value) {
+    public final boolean addValue(final Object value) {
         if (this.values == null) {
-            this.values = new ArrayList();
+            this.values = new ArrayList<Object>();
         }
 
         return this.values.add(value);
