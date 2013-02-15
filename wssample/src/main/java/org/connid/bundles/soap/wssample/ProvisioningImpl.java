@@ -227,7 +227,7 @@ public class ProvisioningImpl implements Provisioning {
                     WSAttributeValue attr = new WSAttributeValue();
                     attr.setName(metaData.getColumnLabel(i + 1));
                     if (StringUtils.isNotBlank(rs.getString(i + 1))) {
-                        attr.setValues(Collections.singletonList(rs.getString(i + 1)));
+                        attr.addValue(rs.getString(i + 1));
                     }
                     if ("userId".equalsIgnoreCase(metaData.getColumnName(i + 1))) {
                         attr.setKey(true);
