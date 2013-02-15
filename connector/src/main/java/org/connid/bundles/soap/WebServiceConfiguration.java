@@ -65,7 +65,7 @@ public class WebServiceConfiguration extends AbstractConfiguration {
      */
     @ConfigurationProperty(displayMessageKey = "ENDPOINT_DISPLAY",
     helpMessageKey = "ENDPOINT_HELP",
-    confidential = false)
+    confidential = false, order = 1, required = true)
     public String getEndpoint() {
         return endpoint;
     }
@@ -82,7 +82,7 @@ public class WebServiceConfiguration extends AbstractConfiguration {
      * application.
      */
     @ConfigurationProperty(displayMessageKey = "CLASSNAME_DISPLAY",
-    helpMessageKey = "CLASSNAME_HELP", confidential = false, order = 1)
+    helpMessageKey = "CLASSNAME_HELP", confidential = false, order = 2, required = true)
     public String getServicename() {
         return servicename;
     }
@@ -92,7 +92,7 @@ public class WebServiceConfiguration extends AbstractConfiguration {
     }
 
     @ConfigurationProperty(displayMessageKey = "CONNECTIONTIMEOUT_DISPLAY",
-    helpMessageKey = "CONNECTIONTIMEOUT_HELP", confidential = false, order = 2)
+    helpMessageKey = "CONNECTIONTIMEOUT_HELP", confidential = false, order = 3)
     public String getConnectionTimeout() {
         return connectionTimeout;
     }
@@ -102,7 +102,7 @@ public class WebServiceConfiguration extends AbstractConfiguration {
     }
 
     @ConfigurationProperty(displayMessageKey = "RECEIVETIMEOUT_DISPLAY",
-    helpMessageKey = "RECEIVETIMEOUT_HELP", confidential = false, order = 3)
+    helpMessageKey = "RECEIVETIMEOUT_HELP", confidential = false, order = 4)
     public String getReceiveTimeout() {
         return receiveTimeout;
     }
@@ -112,7 +112,7 @@ public class WebServiceConfiguration extends AbstractConfiguration {
     }
 
     @ConfigurationProperty(displayMessageKey = "SOAPACTION_DISPLAY",
-    helpMessageKey = "SOAPACTION_HELP", confidential = false, order = 4)
+    helpMessageKey = "SOAPACTION_HELP", confidential = false, order = 5)
     public String getSoapActionUriPrefix() {
         return soapActionUriPrefix;
     }
@@ -162,7 +162,7 @@ public class WebServiceConfiguration extends AbstractConfiguration {
         }
 
         try {
-            // Check if the specified enpoint is a well-formed URL.
+            // Check if the specified endpoint is a well-formed URL.
             new URL(endpoint);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(
