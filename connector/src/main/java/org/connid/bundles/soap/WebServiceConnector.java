@@ -23,7 +23,6 @@
 package org.connid.bundles.soap;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -275,13 +274,11 @@ public class WebServiceConnector implements
             wsAttributeValue = new WSAttributeValue(wsAttribute);
             attributes.add(wsAttributeValue);
 
-            List value = attr.getValue();
-
+            List<Object> value = attr.getValue();
             if (value != null && value.size() == 1
-                    && (value.get(0) instanceof GuardedString
-                    || value.get(0) instanceof GuardedByteArray)) {
+                    && (value.get(0) instanceof GuardedString || value.get(0) instanceof GuardedByteArray)) {
 
-                wsAttributeValue.setValues(Collections.singletonList(value.toString()));
+                wsAttributeValue.addValue(value.toString());
             } else {
                 wsAttributeValue.setValues(value);
             }
@@ -468,7 +465,7 @@ public class WebServiceConnector implements
             for (Iterator<WSUser> i = resultSet.iterator(); i.hasNext() && handle;) {
 
                 user = i.next();
-                
+
                 if (LOG.isOk()) {
                     LOG.ok("Found user: {0}", user);
                 }
@@ -557,14 +554,11 @@ public class WebServiceConnector implements
             wsAttributeValue = new WSAttributeValue(wsAttribute);
             attributes.add(wsAttributeValue);
 
-            List value = attr.getValue();
-
+            List<Object> value = attr.getValue();
             if (value != null && value.size() == 1
-                    && (value.get(0) instanceof GuardedString
-                    || value.get(0) instanceof GuardedByteArray)) {
+                    && (value.get(0) instanceof GuardedString || value.get(0) instanceof GuardedByteArray)) {
 
-                wsAttributeValue.setValues(
-                        Collections.singletonList(value.toString()));
+                wsAttributeValue.addValue(value.toString());
             } else {
                 wsAttributeValue.setValues(value);
             }
