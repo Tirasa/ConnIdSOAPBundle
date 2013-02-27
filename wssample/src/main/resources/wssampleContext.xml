@@ -1,21 +1,43 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+*
+* Copyright 2011 Tirasa. All rights reserved.
+*
+* The contents of this file are subject to the terms of either the GNU
+* General Public License Version 2 only ("GPL") or the Common Development
+* and Distribution License("CDDL") (collectively, the "License").  You
+* may not use this file except in compliance with the License. You can obtain
+* a copy of the License at https://glassfish.dev.java.net/public/CDDL+GPL.html
+* or glassfish/bootstrap/legal/LICENSE.txt.  See the License for the specific
+* language governing permissions and limitations under the License.
+*
+* When distributing the software, include this License Header Notice in each
+* file and include the License file at glassfish/bootstrap/legal/LICENSE.txt.
+* Sun designates this particular file as subject to the "Classpath" exception
+* as provided by Sun in the GPL Version 2 section of the License file that
+* accompanied this code.  If applicable, add the following below the License
+* Header, with the fields enclosed by brackets [] replaced by your own
+* identifying information: "Portions Copyrighted [year]
+* [name of copyright owner]"
+*/
+-->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:jaxws="http://cxf.apache.org/jaxws"
-       xsi:schemaLocation="
-          http://www.springframework.org/schema/beans
-          http://www.springframework.org/schema/beans/spring-beans.xsd
-          http://cxf.apache.org/jaxws
-          http://cxf.apache.org/schemas/jaxws.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://cxf.apache.org/jaxws
+                           http://cxf.apache.org/schemas/jaxws.xsd">
 
-  <import resource="classpath:META-INF/cxf/cxf.xml" />
-  <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
-  <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+  <import resource="classpath:META-INF/cxf/cxf.xml"/>
+  <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
+  <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
 
-  <jaxws:endpoint
-    id="provisioning"
-    implementor="org.connid.bundles.soap.wssample.ProvisioningImpl"
-    address="/provisioning" />
+  <jaxws:endpoint id="provisioning"
+                  implementor="org.connid.bundles.soap.wssample.ProvisioningImpl"
+                  address="/provisioning"/>
 
 
   <bean id="dbUnitDataTypeFactory" class="org.dbunit.ext.hsqldb.HsqldbDataTypeFactory"/>

@@ -45,8 +45,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
-@WebService(endpointInterface = "org.connid.bundles.soap.provisioning.interfaces.Provisioning",
-serviceName = "Provisioning")
+@WebService(
+        endpointInterface = "org.connid.bundles.soap.provisioning.interfaces.Provisioning",
+        serviceName = "Provisioning")
 public class ProvisioningImpl implements Provisioning {
 
     /**
@@ -55,7 +56,7 @@ public class ProvisioningImpl implements Provisioning {
     private static final Logger LOG = LoggerFactory.getLogger(Provisioning.class);
 
     @Override
-    public String delete(String accountid)
+    public String delete(final String accountid)
             throws ProvisioningException {
 
         LOG.debug("Delete request received");
@@ -75,7 +76,6 @@ public class ProvisioningImpl implements Provisioning {
         } catch (SQLException e) {
             throw new ProvisioningException("Delete operation failed", e);
         } finally {
-
             if (conn != null) {
                 try {
                     close(conn);
@@ -114,7 +114,7 @@ public class ProvisioningImpl implements Provisioning {
     }
 
     @Override
-    public String update(String accountid, List<WSAttributeValue> data)
+    public String update(final String accountid, final List<WSAttributeValue> data)
             throws ProvisioningException {
 
         LOG.debug("Update request received");
@@ -136,7 +136,7 @@ public class ProvisioningImpl implements Provisioning {
 
         try {
             conn = connect();
-            Statement statement = conn.createStatement();
+            final Statement statement = conn.createStatement();
 
             String value;
 
@@ -262,8 +262,8 @@ public class ProvisioningImpl implements Provisioning {
 
         LOG.debug("Create request received with data {}", data);
 
-        List<WSAttribute> schema = schema();
-        Set<String> schemaNames = new HashSet<String>();
+        final List<WSAttribute> schema = schema();
+        final Set<String> schemaNames = new HashSet<String>();
         for (WSAttribute attr : schema) {
             schemaNames.add(attr.getName());
         }
@@ -274,14 +274,13 @@ public class ProvisioningImpl implements Provisioning {
         String query = null;
         try {
             conn = connect();
-            Statement statement = conn.createStatement();
+            final Statement statement = conn.createStatement();
 
-            StringBuilder keys = new StringBuilder();
-            StringBuilder values = new StringBuilder();
+            final StringBuilder keys = new StringBuilder();
+            final StringBuilder values = new StringBuilder();
 
             String accountid = null;
             String value;
-
             for (WSAttributeValue attr : data) {
                 if (schemaNames.contains(attr.getName())) {
                     LOG.debug("Bind attribute: {}", attr);
@@ -318,8 +317,7 @@ public class ProvisioningImpl implements Provisioning {
                 }
             }
 
-            query = "INSERT INTO user (" + keys.toString() + ")"
-                    + "VALUES (" + values.toString() + ");";
+            query = "INSERT INTO user (" + keys.toString() + ") VALUES (" + values.toString() + ")";
 
             LOG.debug("Execute query: " + query);
 
@@ -355,7 +353,7 @@ public class ProvisioningImpl implements Provisioning {
 
         LOG.debug("sync request received");
 
-        return Collections.EMPTY_LIST;
+        return Collections.<WSChange>emptyList();
     }
 
     @Override
@@ -367,14 +365,13 @@ public class ProvisioningImpl implements Provisioning {
         Connection conn = null;
         try {
             conn = connect();
-            Statement statement = conn.createStatement();
+            final Statement statement = conn.createStatement();
 
-            String query =
-                    "SELECT userId FROM user WHERE userId='" + username + "';";
+            final String query = "SELECT userId FROM user WHERE userId='" + username + "';";
 
             LOG.debug("Execute query: " + query);
 
-            ResultSet rs = statement.executeQuery(query);
+            final ResultSet rs = statement.executeQuery(query);
 
             return rs.next() ? rs.getString(1) : null;
         } catch (SQLException e) {
@@ -394,7 +391,7 @@ public class ProvisioningImpl implements Provisioning {
     public List<WSAttribute> schema() {
         LOG.debug("schema request received");
 
-        List<WSAttribute> attrs = new ArrayList<WSAttribute>();
+        final List<WSAttribute> attrs = new ArrayList<WSAttribute>();
 
         WSAttribute attr = new WSAttribute();
         attr.setName("userId");
@@ -592,7 +589,7 @@ public class ProvisioningImpl implements Provisioning {
     }
 
     @Override
-    public String authenticate(String username, String password)
+    public String authenticate(final String username, final String password)
             throws ProvisioningException {
 
         LOG.debug("authenticate request received");
@@ -622,15 +619,12 @@ public class ProvisioningImpl implements Provisioning {
             return null;
         }
 
-        Connection conn = DataSourceUtils.getConnection(
-                DefaultContentLoader.localDataSource);
-
+        final Connection conn = DataSourceUtils.getConnection(DefaultContentLoader.localDataSource);
         if (conn == null) {
             LOG.error("Connection is null");
         }
 
         return conn;
-
     }
 
     /**
@@ -638,9 +632,9 @@ public class ProvisioningImpl implements Provisioning {
      *
      * @throws SQLException
      */
-    private void close(Connection conn)
+    private void close(final Connection conn)
             throws SQLException {
 
-        conn.close();
+        DataSourceUtils.releaseConnection(conn, DefaultContentLoader.localDataSource);
     }
 }

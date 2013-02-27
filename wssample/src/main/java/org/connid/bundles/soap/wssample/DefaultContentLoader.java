@@ -27,8 +27,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Enumeration;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
@@ -48,64 +51,53 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class DefaultContentLoader implements ServletContextListener {
 
-    private static final Logger log = LoggerFactory.getLogger(
-            DefaultContentLoader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultContentLoader.class);
 
     private final String DBSCHEMA = "/schema.sql";
 
     public static DataSource localDataSource = null;
 
     @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        WebApplicationContext springContext =
-                WebApplicationContextUtils.getWebApplicationContext(
-                sce.getServletContext());
+    public void contextInitialized(final ServletContextEvent sce) {
+        final WebApplicationContext springContext =
+                WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext());
 
         if (springContext == null) {
-            log.error("Invalid Spring context");
+            LOG.error("Invalid Spring context");
             return;
         }
 
-        DataSource dataSource =
-                (DataSource) springContext.getBean("localDataSource");
+        final DataSource dataSource = springContext.getBean(DataSource.class);
+        localDataSource = dataSource;
 
-        DefaultContentLoader.localDataSource = dataSource;
+        final DefaultDataTypeFactory dbUnitDataTypeFactory =
+                (DefaultDataTypeFactory) springContext.getBean("dbUnitDataTypeFactory");
 
-        DefaultDataTypeFactory dbUnitDataTypeFactory =
-                (DefaultDataTypeFactory) springContext.getBean(
-                "dbUnitDataTypeFactory");
-
-        Connection conn = DataSourceUtils.getConnection(dataSource);
+        final Connection conn = DataSourceUtils.getConnection(dataSource);
 
         // create schema
-        StringBuilder statement = new StringBuilder();
+        final StringBuilder statement = new StringBuilder();
 
-        InputStream dbschema =
-                DefaultContentLoader.class.getResourceAsStream(DBSCHEMA);
+        final InputStream dbschema = DefaultContentLoader.class.getResourceAsStream(DBSCHEMA);
 
-        BufferedReader buff = new BufferedReader(
-                new InputStreamReader(dbschema));
+        final BufferedReader buff = new BufferedReader(new InputStreamReader(dbschema));
 
         String line = null;
-
         try {
             while ((line = buff.readLine()) != null) {
                 statement.append(line);
             }
         } catch (IOException e) {
-            log.error("Error reading file " + DBSCHEMA, e);
+            LOG.error("Error reading file " + DBSCHEMA, e);
             return;
         }
 
         Statement st = null;
-
         try {
-
             st = conn.createStatement();
             st.execute(statement.toString());
-
         } catch (SQLException e) {
-            log.error("Error creating schema:\n" + statement.toString(), e);
+            LOG.error("Error creating schema:\n" + statement.toString(), e);
             return;
         } finally {
             try {
@@ -118,36 +110,37 @@ public class DefaultContentLoader implements ServletContextListener {
         try {
             IDatabaseConnection dbUnitConn = new DatabaseConnection(conn);
 
-            DatabaseConfig config = dbUnitConn.getConfig();
-            config.setProperty(
-                    "http://www.dbunit.org/properties/datatypeFactory",
-                    dbUnitDataTypeFactory);
+            final DatabaseConfig config = dbUnitConn.getConfig();
+            config.setProperty("http://www.dbunit.org/properties/datatypeFactory", dbUnitDataTypeFactory);
 
             boolean existingData = false;
-            IDataSet existingDataSet = dbUnitConn.createDataSet();
-            for (ITableIterator itor = existingDataSet.iterator();
-                    itor.next() && !existingData;) {
-
+            final IDataSet existingDataSet = dbUnitConn.createDataSet();
+            for (final ITableIterator itor = existingDataSet.iterator(); itor.next() && !existingData;) {
                 existingData = (itor.getTable().getRowCount() > 0);
             }
 
-
-            FlatXmlDataSetBuilder dataSetBuilder =
-                    new FlatXmlDataSetBuilder();
+            final FlatXmlDataSetBuilder dataSetBuilder = new FlatXmlDataSetBuilder();
             dataSetBuilder.setColumnSensing(true);
-            IDataSet dataSet = dataSetBuilder.build(
-                    getClass().getResourceAsStream("/content.xml"));
-
+            final IDataSet dataSet = dataSetBuilder.build(getClass().getResourceAsStream("/content.xml"));
             DatabaseOperation.REFRESH.execute(dbUnitConn, dataSet);
-
         } catch (Throwable t) {
-            log.error("Error loding default content", t);
+            LOG.error("Error loding default content", t);
         } finally {
             DataSourceUtils.releaseConnection(conn, dataSource);
         }
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent sce) {
+    public void contextDestroyed(final ServletContextEvent sce) {
+        final Enumeration<Driver> drivers = DriverManager.getDrivers();
+        while (drivers.hasMoreElements()) {
+            final Driver driver = drivers.nextElement();
+            try {
+                DriverManager.deregisterDriver(driver);
+                LOG.info("Deregistering JDBC driver: {}", driver);
+            } catch (SQLException e) {
+                LOG.error("Error deregistering JDBC driver {}", driver, e);
+            }
+        }
     }
 }

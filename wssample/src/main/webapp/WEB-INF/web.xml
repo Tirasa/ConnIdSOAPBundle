@@ -36,13 +36,13 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:/wssampleContext.xml</param-value>
   </context-param>
-    <!-- Spring context loader -->
+  <!-- Spring context loader -->
   <listener>
     <listener-class>
       org.springframework.web.context.ContextLoaderListener
     </listener-class>
   </listener>
-    <!-- persistence listener -->
+  <!-- persistence listener -->
   <listener>
     <listener-class>org.connid.bundles.soap.wssample.DefaultContentLoader</listener-class>
   </listener>
