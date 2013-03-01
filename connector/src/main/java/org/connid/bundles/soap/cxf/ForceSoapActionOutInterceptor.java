@@ -52,13 +52,14 @@ public class ForceSoapActionOutInterceptor extends AbstractSoapInterceptor {
      * @param message the current message
      * @throws Fault
      */
-    public void handleMessage(SoapMessage message)
+    @Override
+    public void handleMessage(final SoapMessage message)
             throws Fault {
-        setSoapAction(message);
 
+        setSoapAction(message);
     }
 
-    private void setSoapAction(SoapMessage message) {
+    private void setSoapAction(final SoapMessage message) {
         BindingOperationInfo boi = message.getExchange().getBindingOperationInfo();
 
         // The soap action is set on the wrapped operation.
@@ -66,7 +67,7 @@ public class ForceSoapActionOutInterceptor extends AbstractSoapInterceptor {
             boi = boi.getWrappedOperation();
         }
 
-        String action = getSoapAction(message, boi);
+        final String action = getSoapAction(message, boi);
 
         if (message.getVersion() instanceof Soap11) {
             Map<String, List<String>> reqHeaders = CastUtils.cast((Map<?, ?>) message.get(Message.PROTOCOL_HEADERS));
@@ -74,7 +75,7 @@ public class ForceSoapActionOutInterceptor extends AbstractSoapInterceptor {
                 reqHeaders = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
             }
 
-            if (reqHeaders.size() == 0) {
+            if (reqHeaders.isEmpty()) {
                 message.put(Message.PROTOCOL_HEADERS, reqHeaders);
             }
 
@@ -82,16 +83,15 @@ public class ForceSoapActionOutInterceptor extends AbstractSoapInterceptor {
                 reqHeaders.put(SoapBindingConstants.SOAP_ACTION, Collections.singletonList(action));
             }
         } else if (message.getVersion() instanceof Soap12 && !"\"\"".equals(action)) {
-            String ct = (String) message.get(Message.CONTENT_TYPE);
-
-            if (ct.indexOf("action=\"") == -1) {
-                ct = new StringBuilder().append(ct).append("; action=").append(action).toString();
-                message.put(Message.CONTENT_TYPE, ct);
+            String contentType = (String) message.get(Message.CONTENT_TYPE);
+            if (contentType.indexOf("action=\"") == -1) {
+                contentType = new StringBuilder().append(contentType).append("; action=").append(action).toString();
+                message.put(Message.CONTENT_TYPE, contentType);
             }
         }
     }
 
-    private String getSoapAction(SoapMessage message, BindingOperationInfo boi) {
+    private String getSoapAction(final SoapMessage message, BindingOperationInfo boi) {
         // allow an interceptor to override the SOAPAction if need be
         String action = (String) message.get(SoapBindingConstants.SOAP_ACTION);
 
@@ -100,12 +100,12 @@ public class ForceSoapActionOutInterceptor extends AbstractSoapInterceptor {
             if (boi == null) {
                 action = "\"\"";
             } else {
-                BindingOperationInfo dboi = (BindingOperationInfo) boi.getProperty("dispatchToOperation");
+                final BindingOperationInfo dboi = (BindingOperationInfo) boi.getProperty("dispatchToOperation");
                 if (null != dboi) {
                     boi = dboi;
                 }
 
-                SoapOperationInfo soi = boi.getExtensor(SoapOperationInfo.class);
+                final SoapOperationInfo soi = boi.getExtensor(SoapOperationInfo.class);
 
                 action = soi == null || StringUtils.isBlank(soi.getAction()) || StringUtils.isBlank(SOAPActionUriPrefix)
                         ? "\"\"" : (SOAPActionUriPrefix + soi.getAction());

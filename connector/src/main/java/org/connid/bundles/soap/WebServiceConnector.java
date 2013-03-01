@@ -78,7 +78,7 @@ import org.identityconnectors.framework.spi.operations.TestOp;
 import org.identityconnectors.framework.spi.operations.UpdateOp;
 
 @ConnectorClass(displayNameKey = "SOAP_CONNECTOR",
-configurationClass = WebServiceConfiguration.class)
+        configurationClass = WebServiceConfiguration.class)
 public class WebServiceConnector implements
         PoolableConnector,
         AuthenticateOp,
@@ -151,9 +151,9 @@ public class WebServiceConnector implements
 
         if (connection != null) {
             connection.dispose();
+            connection = null;
         }
-
-        connection = null;
+        WebServiceConnection.shutdownBus();
     }
 
     /**
@@ -191,7 +191,7 @@ public class WebServiceConnector implements
         }
 
         // get web service client
-        Provisioning provisioning = connection.getProvisioning();
+        final Provisioning provisioning = connection.getProvisioning();
         if (provisioning == null) {
             throw new IllegalStateException("Web Service client not found");
         }
@@ -227,13 +227,13 @@ public class WebServiceConnector implements
         }
 
         // get web service client
-        Provisioning provisioning = connection.getProvisioning();
+        final Provisioning provisioning = connection.getProvisioning();
         if (provisioning == null) {
             throw new IllegalStateException("Web Service client not found");
         }
 
         // get account name
-        Name name = AttributeUtil.getNameFromAttributes(attrs);
+        final Name name = AttributeUtil.getNameFromAttributes(attrs);
         if (name == null) {
             throw new IllegalArgumentException("No name specified");
         }
@@ -241,16 +241,11 @@ public class WebServiceConnector implements
         LOG.ok("Account to be created: " + name.getNameValue());
 
         // to be user in order to pass information to the web service
-        final List<WSAttributeValue> attributes =
-                new ArrayList<WSAttributeValue>();
-
-        WSAttributeValue wsAttributeValue;
-        WSAttribute wsAttribute;
+        final List<WSAttributeValue> attributes = new ArrayList<WSAttributeValue>();
 
         // retrieve attributes
         for (Attribute attr : attrs) {
-
-            wsAttribute = new WSAttribute(attr.getName());
+            final WSAttribute wsAttribute = new WSAttribute(attr.getName());
 
             if (attr.is(Name.NAME)) {
                 wsAttribute.setKey(true);
@@ -271,10 +266,10 @@ public class WebServiceConnector implements
                         + "\n\tIsPassword: " + wsAttribute.isPassword());
             }
 
-            wsAttributeValue = new WSAttributeValue(wsAttribute);
+            final WSAttributeValue wsAttributeValue = new WSAttributeValue(wsAttribute);
             attributes.add(wsAttributeValue);
 
-            List<Object> value = attr.getValue();
+            final List<Object> value = attr.getValue();
             if (value != null && value.size() == 1
                     && (value.get(0) instanceof GuardedString || value.get(0) instanceof GuardedByteArray)) {
 
@@ -316,7 +311,7 @@ public class WebServiceConnector implements
         }
 
         // get web service client
-        Provisioning provisioning = connection.getProvisioning();
+        final Provisioning provisioning = connection.getProvisioning();
         if (provisioning == null) {
             throw new IllegalStateException("Web Service client not found");
         }
@@ -337,22 +332,19 @@ public class WebServiceConnector implements
     public Schema schema() {
         LOG.ok("Schema retrieving");
 
-        Provisioning provisioning = connection.getProvisioning();
+        final Provisioning provisioning = connection.getProvisioning();
 
         if (provisioning == null) {
             throw new IllegalStateException("Web Service client not found");
         }
 
-        List<WSAttribute> wsAttrs = provisioning.schema();
-
-        Set<AttributeInfo> attributes = new HashSet<AttributeInfo>();
-
         if (wsAttributes != null) {
             wsAttributes.clear();
         }
-
         wsAttributes = new HashMap<String, WSAttribute>();
 
+        final Set<AttributeInfo> attributes = new HashSet<AttributeInfo>();
+        final List<WSAttribute> wsAttrs = provisioning.schema();
         for (WSAttribute attribute : wsAttrs) {
 
             wsAttributes.put(getAttributeName(attribute), attribute);
@@ -376,9 +368,7 @@ public class WebServiceConnector implements
 
         final SchemaBuilder schemaBld = new SchemaBuilder(getClass());
 
-        final ObjectClassInfoBuilder objectclassInfoBuilder =
-                new ObjectClassInfoBuilder();
-
+        final ObjectClassInfoBuilder objectclassInfoBuilder = new ObjectClassInfoBuilder();
         objectclassInfoBuilder.setType(ObjectClass.ACCOUNT_NAME);
         objectclassInfoBuilder.addAllAttributeInfo(attributes);
 
@@ -394,15 +384,13 @@ public class WebServiceConnector implements
         if (!provisioning.isAuthenticationSupported()) {
             LOG.ok("Authentication is not supported.");
 
-            schemaBld.removeSupportedObjectClass(
-                    AuthenticateOp.class, objectclassInfo);
+            schemaBld.removeSupportedObjectClass(AuthenticateOp.class, objectclassInfo);
         }
 
         if (!provisioning.isSyncSupported()) {
             LOG.ok("Synchronization is not supported.");
 
-            schemaBld.removeSupportedObjectClass(
-                    SyncOp.class, objectclassInfo);
+            schemaBld.removeSupportedObjectClass(SyncOp.class, objectclassInfo);
         }
 
         schema = schemaBld.build();
@@ -449,22 +437,20 @@ public class WebServiceConnector implements
         }
 
         // get web service client
-        Provisioning provisioning = connection.getProvisioning();
+        final Provisioning provisioning = connection.getProvisioning();
         if (provisioning == null) {
             throw new IllegalStateException("Web Service client not found");
         }
 
         try {
-            List<WSUser> resultSet = provisioning.query(query);
+            final List<WSUser> resultSet = provisioning.query(query);
             if (resultSet == null) {
                 return;
             }
 
-            WSUser user;
             boolean handle = true;
-            for (Iterator<WSUser> i = resultSet.iterator(); i.hasNext() && handle;) {
-
-                user = i.next();
+            for (final Iterator<WSUser> i = resultSet.iterator(); i.hasNext() && handle;) {
+                final WSUser user = i.next();
 
                 if (LOG.isOk()) {
                     LOG.ok("Found user: {0}", user);
@@ -510,27 +496,22 @@ public class WebServiceConnector implements
         }
 
         // check attributes
-        if (replaceAttributes == null || replaceAttributes.size() == 0) {
+        if (replaceAttributes == null || replaceAttributes.isEmpty()) {
             throw new IllegalArgumentException("No attribute specified");
         }
 
         // get web service client
-        Provisioning provisioning = connection.getProvisioning();
+        final Provisioning provisioning = connection.getProvisioning();
         if (provisioning == null) {
             throw new IllegalStateException("Web Service client not found");
         }
 
         // to be user in order to pass information to the web service
-        final List<WSAttributeValue> attributes =
-                new ArrayList<WSAttributeValue>();
-
-        WSAttributeValue wsAttributeValue;
-        WSAttribute wsAttribute;
+        final List<WSAttributeValue> attributes = new ArrayList<WSAttributeValue>();
 
         // retrieve attributes
         for (Attribute attr : replaceAttributes) {
-
-            wsAttribute = new WSAttribute(attr.getName());
+            final WSAttribute wsAttribute = new WSAttribute(attr.getName());
 
             if (attr.is(Name.NAME)) {
                 wsAttribute.setKey(true);
@@ -551,10 +532,10 @@ public class WebServiceConnector implements
                         + "\n\tIsPassword: " + wsAttribute.isPassword());
             }
 
-            wsAttributeValue = new WSAttributeValue(wsAttribute);
+            final WSAttributeValue wsAttributeValue = new WSAttributeValue(wsAttribute);
             attributes.add(wsAttributeValue);
 
-            List<Object> value = attr.getValue();
+            final List<Object> value = attr.getValue();
             if (value != null && value.size() == 1
                     && (value.get(0) instanceof GuardedString || value.get(0) instanceof GuardedByteArray)) {
 
@@ -565,7 +546,6 @@ public class WebServiceConnector implements
         }
 
         Uid uuid = null;
-
         try {
             // user creation
             uuid = new Uid(provisioning.update(uid.getUidValue(), attributes));
@@ -599,21 +579,19 @@ public class WebServiceConnector implements
         }
 
         // get web service client
-        Provisioning provisioning = connection.getProvisioning();
+        final Provisioning provisioning = connection.getProvisioning();
         if (provisioning == null) {
             throw new IllegalStateException("Web Service client not found");
         }
 
         try {
-            List<WSChange> changes = provisioning.sync();
+            final List<WSChange> changes = provisioning.sync();
 
             SyncDeltaBuilder sdb = null;
 
             boolean handle = true;
-            for (Iterator<WSChange> i = changes.iterator();
-                    i.hasNext() && handle;) {
-
-                WSChange change = i.next();
+            for (final Iterator<WSChange> i = changes.iterator(); i.hasNext() && handle;) {
+                final WSChange change = i.next();
 
                 if (LOG.isOk()) {
                     LOG.ok("Found change {0}", change);
@@ -638,20 +616,18 @@ public class WebServiceConnector implements
      */
     @Override
     public SyncToken getLatestSyncToken(final ObjectClass objectClass) {
-
         // check objectclass
         if (objectClass == null || (!objectClass.equals(ObjectClass.ACCOUNT))) {
             throw new IllegalArgumentException("Invalid objectclass");
         }
 
         // get web service client
-        Provisioning provisioning = connection.getProvisioning();
+        final Provisioning provisioning = connection.getProvisioning();
         if (provisioning == null) {
             throw new IllegalStateException("Web Service client not found");
         }
 
         SyncToken token = null;
-
         try {
             token = new SyncToken(provisioning.getLatestChangeNumber());
         } catch (ProvisioningException e) {
@@ -678,7 +654,7 @@ public class WebServiceConnector implements
         }
 
         // get web service client
-        Provisioning provisioning = connection.getProvisioning();
+        final Provisioning provisioning = connection.getProvisioning();
         if (provisioning == null) {
             throw new IllegalStateException("Web Service client not found");
         }
@@ -701,7 +677,7 @@ public class WebServiceConnector implements
         return uuid;
     }
 
-    private AttributeInfo buildAttribute(WSAttribute attribute) {
+    private AttributeInfo buildAttribute(final WSAttribute attribute) {
         final AttributeInfoBuilder builder = new AttributeInfoBuilder();
 
         try {
@@ -734,10 +710,8 @@ public class WebServiceConnector implements
         }
     }
 
-    private ConnectorObjectBuilder buildConnectorObject(
-            final Set<WSAttributeValue> attributes) {
-
-        ConnectorObjectBuilder bld = new ConnectorObjectBuilder();
+    private ConnectorObjectBuilder buildConnectorObject(final Set<WSAttributeValue> attributes) {
+        final ConnectorObjectBuilder bld = new ConnectorObjectBuilder();
 
         String uid = null;
 
@@ -745,25 +719,22 @@ public class WebServiceConnector implements
 
             if (uid == null && (attribute.isKey()
                     || Name.NAME.equals(attribute.getName()) || Uid.NAME.equals(attribute.getName()))) {
+
                 uid = attribute.getStringValue();
                 bld.setName(uid);
                 bld.addAttribute(AttributeBuilder.build(attribute.getName(), attribute.getValues()));
-
             } else if (OperationalAttributes.ENABLE_NAME.equals(attribute.getName())) {
-
                 bld.addAttribute(AttributeBuilder.buildEnabled(
                         attribute.getValues() == null
                         || attribute.getValues().isEmpty()
                         || Boolean.parseBoolean(attribute.getValues().get(0).toString())));
 
             } else {
-
                 if (attribute.getValues() == null) {
                     bld.addAttribute(AttributeBuilder.build(attribute.getName()));
                 } else {
                     bld.addAttribute(AttributeBuilder.build(attribute.getName(), attribute.getValues()));
                 }
-
             }
         }
 
@@ -800,9 +771,9 @@ public class WebServiceConnector implements
     }
 
     private SyncDeltaBuilder buildSyncDelta(final WSChange change) {
-        SyncDeltaBuilder bld = new SyncDeltaBuilder();
+        final SyncDeltaBuilder bld = new SyncDeltaBuilder();
 
-        ConnectorObject object = buildConnectorObject(change.getAttributes()).build();
+        final ConnectorObject object = buildConnectorObject(change.getAttributes()).build();
 
         bld.setToken(new SyncToken(change.getId()));
         bld.setObject(object);

@@ -26,6 +26,7 @@ import static org.junit.Assert.*;
 
 import java.io.InputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -67,15 +68,17 @@ public class SOAPTestITCase {
 
     private static final Log LOG = Log.getLog(SOAPTestITCase.class);
 
-    final private String ENDPOINT_PREFIX = "http://localhost:8888/wssample/services";
+    private static final String TESTUSER = "TESTUSER";
 
-    final private String SERVICE = "/provisioning";
+    private static final String ENDPOINT_PREFIX = "http://localhost:8888/wssample/services";
 
-    final private String bundlename = "org.connid.bundles.soap";
+    private static final String SERVICE = "/provisioning";
+
+    private static final String BUNDLE_NAME = "org.connid.bundles.soap";
+
+    private static final String BUNDLE_CLASS = WebServiceConnector.class.getName();
 
     private String bundleversion = null;
-
-    final private String bundleclass = WebServiceConnector.class.getName();
 
     private String bundledirectory;
 
@@ -86,20 +89,29 @@ public class SOAPTestITCase {
      */
     @Before
     public void init() {
-        Properties props = new java.util.Properties();
+        InputStream propStream = null;
         try {
-            InputStream propStream = getClass().getResourceAsStream("/bundle.properties");
+            final Properties props = new Properties();
+            propStream = getClass().getResourceAsStream("/bundle.properties");
             props.load(propStream);
             bundleversion = props.getProperty("bundleversion");
             bundledirectory = props.getProperty("bundledirectory");
-        } catch (Throwable t) {
-            LOG.error("Could not load bundles.properties", t);
+        } catch (Exception e) {
+            LOG.error("Could not load bundles.properties", e);
+        } finally {
+            if (propStream != null) {
+                try {
+                    propStream.close();
+                } catch (IOException e) {
+                    //ignore
+                }
+            }
         }
         assertNotNull(bundleversion);
         assertNotNull(bundledirectory);
 
-        File bundleDirectory = new File(bundledirectory);
-        List<URL> urls = new ArrayList<URL>();
+        final File bundleDirectory = new File(bundledirectory);
+        final List<URL> urls = new ArrayList<URL>();
         for (String file : bundleDirectory.list()) {
             try {
                 urls.add(IOUtil.makeURL(bundleDirectory, file));
@@ -112,12 +124,13 @@ public class SOAPTestITCase {
         assertFalse(urls.isEmpty());
         LOG.ok("URL: " + urls.toString());
 
-        ConnectorInfoManagerFactory connectorInfoManagerFactory = ConnectorInfoManagerFactory.getInstance();
-        ConnectorInfoManager manager = connectorInfoManagerFactory.getLocalManager(urls.toArray(new URL[0]));
+        final ConnectorInfoManagerFactory connectorInfoManagerFactory = ConnectorInfoManagerFactory.getInstance();
+        final ConnectorInfoManager manager =
+                connectorInfoManagerFactory.getLocalManager(urls.toArray(new URL[urls.size()]));
         assertNotNull(manager);
 
         // list connectors info
-        List<ConnectorInfo> infos = manager.getConnectorInfos();
+        final List<ConnectorInfo> infos = manager.getConnectorInfos();
         assertNotNull(infos);
         LOG.ok("infos size: " + infos.size());
 
@@ -125,53 +138,53 @@ public class SOAPTestITCase {
             LOG.ok("Name: " + i.getConnectorDisplayName());
         }
 
-        LOG.ok("\nBundle name: " + bundlename
+        LOG.ok("\nBundle name: " + BUNDLE_NAME
                 + "\nBundle version: " + bundleversion
-                + "\nBundle class: " + bundleclass);
+                + "\nBundle class: " + BUNDLE_CLASS);
 
-        // specify a connector.
-        ConnectorKey key = new ConnectorKey(bundlename, bundleversion, bundleclass);
+        // specify a connector
+        final ConnectorKey key = new ConnectorKey(BUNDLE_NAME, bundleversion, BUNDLE_CLASS);
         assertNotNull(key);
 
         // get the specified connector.
-        ConnectorInfo info = manager.findConnectorInfo(key);
-
+        final ConnectorInfo info = manager.findConnectorInfo(key);
         assertNotNull(info);
 
         // create default configuration
-        APIConfiguration apiConfig = info.createDefaultAPIConfiguration();
+        final APIConfiguration apiConfig = info.createDefaultAPIConfiguration();
         assertNotNull(apiConfig);
 
         // retrieve the ConfigurationProperties.
-        ConfigurationProperties properties = apiConfig.getConfigurationProperties();
+        final ConfigurationProperties properties = apiConfig.getConfigurationProperties();
         assertNotNull(properties);
 
         // Print out what the properties are (not necessary)
-        for (String propName : properties.getPropertyNames()) {
-            ConfigurationProperty prop = properties.getProperty(propName);
+        if (LOG.isOk()) {
+            for (String propName : properties.getPropertyNames()) {
+                ConfigurationProperty prop = properties.getProperty(propName);
 
-            LOG.ok("\nProperty Name: " + prop.getName()
-                    + "\nProperty Type: " + prop.getType());
+                LOG.ok("Property Name: " + prop.getName()
+                        + "\nProperty Type: " + prop.getType());
+            }
         }
 
         // Set all of the ConfigurationProperties needed by the connector.
         properties.setPropertyValue("endpoint", ENDPOINT_PREFIX + SERVICE);
         properties.setPropertyValue("servicename", Provisioning.class.getName());
 
-        // Use the ConnectorFacadeFactory's newInstance() method to get
-        // a new connector.
+        // Use the ConnectorFacadeFactory's newInstance() method to get a new connector.
         connector = ConnectorFacadeFactory.getInstance().newInstance(apiConfig);
         assertNotNull(connector);
 
         // Make sure we have set up the Configuration properly
-        Throwable t = null;
+        Exception e = null;
         try {
             connector.validate();
             connector.test();
         } catch (RuntimeException re) {
-            t = re;
+            e = re;
         }
-        assertNull(t);
+        assertNull(e);
     }
 
     /**
@@ -179,8 +192,7 @@ public class SOAPTestITCase {
      */
     @Test
     public void checkForOperation() {
-        Set<Class<? extends APIOperation>> ops =
-                connector.getSupportedOperations();
+        final Set<Class<? extends APIOperation>> ops = connector.getSupportedOperations();
 
         // check to see if the set contains the operation you care about
         assertTrue(ops.contains(CreateApiOp.class));
@@ -191,19 +203,21 @@ public class SOAPTestITCase {
      */
     @Test
     public void schema() {
-        Schema schema = connector.schema();
+        final Schema schema = connector.schema();
         assertNotNull(schema);
 
-        Set<ObjectClassInfo> ocis = schema.getObjectClassInfo();
+        final Set<ObjectClassInfo> ocis = schema.getObjectClassInfo();
         assertNotNull(ocis);
 
         for (ObjectClassInfo oci : ocis) {
-            Set<AttributeInfo> attrs = oci.getAttributeInfo();
+            final Set<AttributeInfo> attrs = oci.getAttributeInfo();
             assertNotNull(attrs);
 
-            for (AttributeInfo attr : attrs) {
-                LOG.ok("\nAttribute name: " + attr.getName()
-                        + "\nAttribute type: " + attr.getType().getName());
+            if (LOG.isOk()) {
+                for (AttributeInfo attr : attrs) {
+                    LOG.ok("Attribute name: " + attr.getName()
+                            + "\nAttribute type: " + attr.getType().getName());
+                }
             }
         }
     }
@@ -215,27 +229,22 @@ public class SOAPTestITCase {
     public void search() {
         final List<ConnectorObject> results = new ArrayList<ConnectorObject>();
 
-        ResultsHandler resultsHandler = new ResultsHandler() {
+        final ResultsHandler resultsHandler = new ResultsHandler() {
 
             @Override
-            public boolean handle(ConnectorObject obj) {
+            public boolean handle(final ConnectorObject obj) {
                 results.add(obj);
                 return true;
             }
         };
 
-        Filter usernameFilter = FilterBuilder.startsWith(
-                AttributeBuilder.build("USERID", "test"));
+        final Filter usernameFilter = FilterBuilder.startsWith(AttributeBuilder.build("USERID", "test"));
 
-        Filter nameFilter = FilterBuilder.equalTo(
-                AttributeBuilder.build("NAME", "jhon"));
+        final Filter nameFilter = FilterBuilder.equalTo(AttributeBuilder.build("NAME", "jhon"));
 
-        Filter surnameFilter = FilterBuilder.equalTo(
-                AttributeBuilder.build("SURNAME", "doe"));
+        final Filter surnameFilter = FilterBuilder.equalTo(AttributeBuilder.build("SURNAME", "doe"));
 
-        Filter filter = FilterBuilder.or(
-                usernameFilter,
-                FilterBuilder.and(nameFilter, surnameFilter));
+        final Filter filter = FilterBuilder.or(usernameFilter, FilterBuilder.and(nameFilter, surnameFilter));
 
         connector.search(ObjectClass.ACCOUNT, filter, resultsHandler, null);
 
@@ -246,7 +255,7 @@ public class SOAPTestITCase {
 
         if (LOG.isOk()) {
             for (ConnectorObject obj : results) {
-                LOG.ok("\nName: " + obj.getName().getNameValue()
+                LOG.ok("Name: " + obj.getName().getNameValue()
                         + "\nUID: " + obj.getUid().getUidValue());
             }
         }
@@ -257,8 +266,8 @@ public class SOAPTestITCase {
      */
     @Test
     public void create() {
-        Set<Attribute> attrs = new HashSet<Attribute>();
-        attrs.add(new Name("TESTUSER"));
+        final Set<Attribute> attrs = new HashSet<Attribute>();
+        attrs.add(new Name(TESTUSER));
 
         attrs.add(AttributeBuilder.buildPassword("TESTPASSWORD".toCharArray()));
 
@@ -268,10 +277,10 @@ public class SOAPTestITCase {
         attrs.add(AttributeBuilder.build("type", "person"));
         attrs.add(AttributeBuilder.build("birthdate", "12/03/1990"));
 
-        Uid userUid = connector.create(ObjectClass.ACCOUNT, attrs, null);
+        final Uid userUid = connector.create(ObjectClass.ACCOUNT, attrs, null);
 
         assertNotNull(userUid);
-        assertEquals("TESTUSER", userUid.getUidValue());
+        assertEquals(TESTUSER, userUid.getUidValue());
     }
 
     /**
@@ -279,16 +288,15 @@ public class SOAPTestITCase {
      */
     @Test
     public void update() {
-        Set attrs = new HashSet();
-        attrs.add(new Name("TESTUSER"));
+        final Set<Attribute> attrs = new HashSet<Attribute>();
+        attrs.add(new Name(TESTUSER));
 
         attrs.add(AttributeBuilder.buildPassword("NEWPASSWORD".toCharArray()));
 
-        Uid userUid = connector.update(
-                ObjectClass.ACCOUNT, new Uid("TESTUSER"), attrs, null);
+        final Uid userUid = connector.update(ObjectClass.ACCOUNT, new Uid(TESTUSER), attrs, null);
 
         assertNotNull(userUid);
-        assertEquals("TESTUSER", userUid.getUidValue());
+        assertEquals(TESTUSER, userUid.getUidValue());
     }
 
     /**
@@ -296,8 +304,8 @@ public class SOAPTestITCase {
      */
     @Test
     public void delete() {
-        Uid userUid = connector.authenticate(
-                ObjectClass.ACCOUNT, "TESTUSER", new GuardedString("TESTPASSWORD".toCharArray()), null);
+        final Uid userUid = connector.authenticate(
+                ObjectClass.ACCOUNT, TESTUSER, new GuardedString("TESTPASSWORD".toCharArray()), null);
         assertNotNull(userUid);
 
         connector.delete(ObjectClass.ACCOUNT, userUid, null);

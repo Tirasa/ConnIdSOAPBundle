@@ -22,7 +22,6 @@
  */
 package org.connid.bundles.soap;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import org.identityconnectors.framework.spi.AbstractConfiguration;
 import org.identityconnectors.framework.spi.ConfigurationProperty;
@@ -64,8 +63,8 @@ public class WebServiceConfiguration extends AbstractConfiguration {
      * application.
      */
     @ConfigurationProperty(displayMessageKey = "ENDPOINT_DISPLAY",
-    helpMessageKey = "ENDPOINT_HELP",
-    confidential = false, order = 1, required = true)
+            helpMessageKey = "ENDPOINT_HELP",
+            confidential = false, order = 1, required = true)
     public String getEndpoint() {
         return endpoint;
     }
@@ -73,7 +72,7 @@ public class WebServiceConfiguration extends AbstractConfiguration {
     /**
      * Setter for the example property.
      */
-    public void setEndpoint(String endpoint) {
+    public void setEndpoint(final String endpoint) {
         this.endpoint = endpoint;
     }
 
@@ -82,42 +81,42 @@ public class WebServiceConfiguration extends AbstractConfiguration {
      * application.
      */
     @ConfigurationProperty(displayMessageKey = "CLASSNAME_DISPLAY",
-    helpMessageKey = "CLASSNAME_HELP", confidential = false, order = 2, required = true)
+            helpMessageKey = "CLASSNAME_HELP", confidential = false, order = 2, required = true)
     public String getServicename() {
         return servicename;
     }
 
-    public void setServicename(String classname) {
+    public void setServicename(final String classname) {
         this.servicename = classname;
     }
 
     @ConfigurationProperty(displayMessageKey = "CONNECTIONTIMEOUT_DISPLAY",
-    helpMessageKey = "CONNECTIONTIMEOUT_HELP", confidential = false, order = 3)
+            helpMessageKey = "CONNECTIONTIMEOUT_HELP", confidential = false, order = 3)
     public String getConnectionTimeout() {
         return connectionTimeout;
     }
 
-    public void setConnectionTimeout(String connectionTimeout) {
+    public void setConnectionTimeout(final String connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
     }
 
     @ConfigurationProperty(displayMessageKey = "RECEIVETIMEOUT_DISPLAY",
-    helpMessageKey = "RECEIVETIMEOUT_HELP", confidential = false, order = 4)
+            helpMessageKey = "RECEIVETIMEOUT_HELP", confidential = false, order = 4)
     public String getReceiveTimeout() {
         return receiveTimeout;
     }
 
-    public void setReceiveTimeout(String receiveTimeout) {
+    public void setReceiveTimeout(final String receiveTimeout) {
         this.receiveTimeout = receiveTimeout;
     }
 
     @ConfigurationProperty(displayMessageKey = "SOAPACTION_DISPLAY",
-    helpMessageKey = "SOAPACTION_HELP", confidential = false, order = 5)
+            helpMessageKey = "SOAPACTION_HELP", confidential = false, order = 5)
     public String getSoapActionUriPrefix() {
         return soapActionUriPrefix;
     }
 
-    public void setSoapActionUriPrefix(String soapActionUriPrefix) {
+    public void setSoapActionUriPrefix(final String soapActionUriPrefix) {
         this.soapActionUriPrefix = soapActionUriPrefix;
     }
 
@@ -128,14 +127,12 @@ public class WebServiceConfiguration extends AbstractConfiguration {
     public void validate() {
         // Check if endpoint has been specified.
         if (StringUtil.isBlank(endpoint)) {
-            throw new IllegalArgumentException(
-                    "Endpoint cannot be null or empty.");
+            throw new IllegalArgumentException("Endpoint cannot be null or empty.");
         }
 
         // Check if servicename has been specified.
         if (StringUtil.isBlank(servicename)) {
-            throw new IllegalArgumentException(
-                    "Service name cannot be null or empty.");
+            throw new IllegalArgumentException("Service name cannot be null or empty.");
         }
 
         // Check if servicename has been specified.
@@ -146,8 +143,7 @@ public class WebServiceConfiguration extends AbstractConfiguration {
         try {
             Long.parseLong(connectionTimeout);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(
-                    "The specified connection timeout is not valid.");
+            throw new IllegalArgumentException("The specified connection timeout is not valid.");
         }
 
         if (StringUtil.isBlank(receiveTimeout)) {
@@ -157,16 +153,15 @@ public class WebServiceConfiguration extends AbstractConfiguration {
         try {
             Long.parseLong(receiveTimeout);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(
-                    "The specified receive timeout is not valid.");
+            throw new IllegalArgumentException("The specified receive timeout is not valid.");
         }
 
         try {
-            // Check if the specified endpoint is a well-formed URL.
-            new URL(endpoint);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(
-                    "The specified endpoint is not a valid URL.");
+            // Check if the specified endpoint is a well-formed URL
+            final URL endpointURL = new URL(endpoint);
+            endpointURL.toURI();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("The specified endpoint is not a valid URL.");
         }
     }
 }

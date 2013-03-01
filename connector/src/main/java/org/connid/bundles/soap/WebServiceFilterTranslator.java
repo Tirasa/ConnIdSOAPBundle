@@ -39,33 +39,27 @@ import org.identityconnectors.framework.common.objects.filter.LessThanOrEqualFil
 import org.identityconnectors.framework.common.objects.filter.StartsWithFilter;
 
 /**
- * This is an implementation of AbstractFilterTranslator that gives a concrete
- * representation of which filters can be applied at the connector level
- * (natively). If the WebService doesn't support a certain expression type,
- * that factory method should return null. This level of filtering is present
- * only to allow any native contructs that may be available to help reduce the
- * result set for the framework, which will (strictly) reapply all filters
- * specified after the connector does the initialfiltering.
- * 
- * Note: The generic query type is most commonly a String,
- * but does not have to be.
+ * This is an implementation of AbstractFilterTranslator that gives a concrete representation of which filters can be
+ * applied at the connector level (natively). If the WebService doesn't support a certain expression type, that factory
+ * method should return null. This level of filtering is present only to allow any native contructs that may be
+ * available to help reduce the result set for the framework, which will (strictly) reapply all filters specified after
+ * the connector does the initialfiltering.
+ *
+ * Note: The generic query type is most commonly a String, but does not have to be.
  */
-public class WebServiceFilterTranslator
-        extends AbstractFilterTranslator<Operand> {
+public class WebServiceFilterTranslator extends AbstractFilterTranslator<Operand> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Operand createContainsExpression(
-            ContainsFilter filter, boolean not) {
-
+    protected Operand createContainsExpression(final ContainsFilter filter, final boolean not) {
         if (filter == null) {
             return null;
         }
 
-        String name = filter.getAttribute().getName();
-        String value = AttributeUtil.getAsStringValue(filter.getAttribute());
+        final String name = filter.getAttribute().getName();
+        final String value = AttributeUtil.getAsStringValue(filter.getAttribute());
         if (StringUtil.isBlank(value)) {
             return null;
         }
@@ -77,15 +71,13 @@ public class WebServiceFilterTranslator
      * {@inheritDoc}
      */
     @Override
-    protected Operand createEndsWithExpression(
-            EndsWithFilter filter, boolean not) {
-
+    protected Operand createEndsWithExpression(final EndsWithFilter filter, final boolean not) {
         if (filter == null) {
             return null;
         }
 
-        String name = filter.getAttribute().getName();
-        String value = AttributeUtil.getAsStringValue(filter.getAttribute());
+        final String name = filter.getAttribute().getName();
+        final String value = AttributeUtil.getAsStringValue(filter.getAttribute());
         if (StringUtil.isBlank(value)) {
             return null;
         }
@@ -97,15 +89,13 @@ public class WebServiceFilterTranslator
      * {@inheritDoc}
      */
     @Override
-    protected Operand createStartsWithExpression(
-            StartsWithFilter filter, boolean not) {
-
+    protected Operand createStartsWithExpression(final StartsWithFilter filter, final boolean not) {
         if (filter == null) {
             return null;
         }
 
-        String name = filter.getAttribute().getName();
-        String value = AttributeUtil.getAsStringValue(filter.getAttribute());
+        final String name = filter.getAttribute().getName();
+        final String value = AttributeUtil.getAsStringValue(filter.getAttribute());
         if (StringUtil.isBlank(value)) {
             return null;
         }
@@ -117,15 +107,13 @@ public class WebServiceFilterTranslator
      * {@inheritDoc}
      */
     @Override
-    protected Operand createEqualsExpression(
-            EqualsFilter filter, boolean not) {
-
+    protected Operand createEqualsExpression(final EqualsFilter filter, final boolean not) {
         if (filter == null) {
             return null;
         }
 
-        String name = filter.getAttribute().getName();
-        String value = AttributeUtil.getAsStringValue(filter.getAttribute());
+        final String name = filter.getAttribute().getName();
+        final String value = AttributeUtil.getAsStringValue(filter.getAttribute());
         if (StringUtil.isBlank(value)) {
             return null;
         }
@@ -137,14 +125,12 @@ public class WebServiceFilterTranslator
      * {@inheritDoc}
      */
     @Override
-    protected Operand createAndExpression(
-            Operand leftExpression, Operand rightExpression) {
-
+    protected Operand createAndExpression(final Operand leftExpression, final Operand rightExpression) {
         if (leftExpression == null || rightExpression == null) {
             return null;
         }
 
-        Set<Operand> operands = new HashSet<Operand>();
+        final Set<Operand> operands = new HashSet<Operand>();
         operands.add(leftExpression);
         operands.add(rightExpression);
 
@@ -155,14 +141,12 @@ public class WebServiceFilterTranslator
      * {@inheritDoc}
      */
     @Override
-    protected Operand createOrExpression(
-            Operand leftExpression, Operand rightExpression) {
-
+    protected Operand createOrExpression(final Operand leftExpression, final Operand rightExpression) {
         if (leftExpression == null || rightExpression == null) {
             return null;
         }
 
-        Set<Operand> operands = new HashSet<Operand>();
+        final Set<Operand> operands = new HashSet<Operand>();
         operands.add(leftExpression);
         operands.add(rightExpression);
 
@@ -173,15 +157,13 @@ public class WebServiceFilterTranslator
      * {@inheritDoc}
      */
     @Override
-    protected Operand createGreaterThanExpression(
-            GreaterThanFilter filter, boolean not) {
-
+    protected Operand createGreaterThanExpression(final GreaterThanFilter filter, final boolean not) {
         if (filter == null) {
             return null;
         }
 
-        String name = filter.getAttribute().getName();
-        String value = AttributeUtil.getAsStringValue(filter.getAttribute());
+        final String name = filter.getAttribute().getName();
+        final String value = AttributeUtil.getAsStringValue(filter.getAttribute());
         if (StringUtil.isBlank(value)) {
             return null;
         }
@@ -193,15 +175,13 @@ public class WebServiceFilterTranslator
      * {@inheritDoc}
      */
     @Override
-    protected Operand createGreaterThanOrEqualExpression(
-            GreaterThanOrEqualFilter filter, boolean not) {
-
+    protected Operand createGreaterThanOrEqualExpression(final GreaterThanOrEqualFilter filter, final boolean not) {
         if (filter == null) {
             return null;
         }
 
-        String name = filter.getAttribute().getName();
-        String value = AttributeUtil.getAsStringValue(filter.getAttribute());
+        final String name = filter.getAttribute().getName();
+        final String value = AttributeUtil.getAsStringValue(filter.getAttribute());
         if (StringUtil.isBlank(value)) {
             return null;
         }
@@ -213,15 +193,13 @@ public class WebServiceFilterTranslator
      * {@inheritDoc}
      */
     @Override
-    protected Operand createLessThanExpression(
-            LessThanFilter filter, boolean not) {
-
+    protected Operand createLessThanExpression(final LessThanFilter filter, final boolean not) {
         if (filter == null) {
             return null;
         }
 
-        String name = filter.getAttribute().getName();
-        String value = AttributeUtil.getAsStringValue(filter.getAttribute());
+        final String name = filter.getAttribute().getName();
+        final String value = AttributeUtil.getAsStringValue(filter.getAttribute());
         if (StringUtil.isBlank(value)) {
             return null;
         }
@@ -233,15 +211,13 @@ public class WebServiceFilterTranslator
      * {@inheritDoc}
      */
     @Override
-    protected Operand createLessThanOrEqualExpression(
-            LessThanOrEqualFilter filter, boolean not) {
-
+    protected Operand createLessThanOrEqualExpression(final LessThanOrEqualFilter filter, final boolean not) {
         if (filter == null) {
             return null;
         }
 
-        String name = filter.getAttribute().getName();
-        String value = AttributeUtil.getAsStringValue(filter.getAttribute());
+        final String name = filter.getAttribute().getName();
+        final String value = AttributeUtil.getAsStringValue(filter.getAttribute());
         if (StringUtil.isBlank(value)) {
             return null;
         }
