@@ -86,15 +86,15 @@
     <servlet-api.version>2.5</servlet-api.version>
     <jsp-api.version>2.1</jsp-api.version>
 
-    <cxf.version>2.7.3</cxf.version>
-    <org.springframework.version>3.2.1.RELEASE</org.springframework.version>
+    <cxf.version>2.7.4</cxf.version>
+    <org.springframework.version>3.2.2.RELEASE</org.springframework.version>
         
     <hsqldb.version>2.2.9</hsqldb.version>
     <dbunit.version>2.4.9</dbunit.version>
     <commons-lang.version>2.6</commons-lang.version>
 
-    <logback.version>1.0.9</logback.version>
-    <slf4j.version>1.7.2</slf4j.version>
+    <logback.version>1.0.11</logback.version>
+    <slf4j.version>1.7.5</slf4j.version>
 
     <junit.version>4.11</junit.version>
 
