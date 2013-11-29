@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.connid.bundles.soap.exceptions.ProvisioningException;
 import org.connid.bundles.soap.provisioning.interfaces.Provisioning;
 import org.connid.bundles.soap.to.WSAttributeValue;
 import org.connid.bundles.soap.to.WSChange;
@@ -48,8 +49,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath:wssampleContext.xml"})
 public class ProvisioningTestITCase {
 
-    private static final Logger LOG =
-            LoggerFactory.getLogger(ProvisioningTestITCase.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ProvisioningTestITCase.class);
 
     @Autowired
     private JaxWsProxyFactoryBean proxyFactory;
@@ -64,74 +64,49 @@ public class ProvisioningTestITCase {
     @Test
     public void authenticate() {
         Throwable t = null;
-
         try {
-
-            String uid = provisioning.authenticate(
-                    "TESTUSER",
-                    "password");
-
+            String uid = provisioning.authenticate("TESTUSER", "password");
             assertEquals("TESTUSER", uid);
-
-        } catch (Exception e) {
-
+        } catch (ProvisioningException e) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Unknown exception!", e);
             }
-
             t = e;
         }
-
         assertNull(t);
     }
 
     @Test
     public void checkAlive() {
-
         Throwable t = null;
-
         try {
-
             provisioning.checkAlive();
-
         } catch (Exception e) {
-
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Unknown exception!", e);
             }
-
             t = e;
         }
-
         assertNull(t);
-
     }
 
     @Test
     public void schema() {
-
         Throwable t = null;
-
         try {
-
             provisioning.schema();
-
         } catch (Exception e) {
-
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Unknown exception!", e);
             }
-
             t = e;
         }
-
         assertNull(t);
     }
 
     @Test
     public void create() {
         Throwable t = null;
-
         try {
             WSAttributeValue uid = new WSAttributeValue();
             uid.setName("userId");
@@ -176,19 +151,16 @@ public class ProvisioningTestITCase {
 
             assertNotNull(accountId);
             assertEquals(accountId, "john.doe@gmail.com");
-        } catch (Exception e) {
+        } catch (ProvisioningException e) {
             LOG.debug("Unknown exception!", e);
-
             t = e;
         }
-
         assertNull(t);
     }
 
     @Test
     public void update() {
         Throwable t = null;
-
         try {
             WSAttributeValue surname = new WSAttributeValue();
             surname.setName("surname");
@@ -207,28 +179,22 @@ public class ProvisioningTestITCase {
 
             assertNotNull(uid);
             assertEquals("test2", uid);
-
-        } catch (Exception e) {
+        } catch (ProvisioningException e) {
             LOG.debug("Unknown exception!", e);
-
             t = e;
         }
-
         assertNull(t);
     }
 
     @Test
     public void delete() {
         Throwable t = null;
-
         try {
             provisioning.delete("test1");
-        } catch (Exception e) {
+        } catch (ProvisioningException e) {
             LOG.debug("Unknown exception!", e);
-
             t = e;
         }
-
         assertNull(t);
     }
 
@@ -262,50 +228,78 @@ public class ProvisioningTestITCase {
 
             assertNotNull(results);
             assertFalse(results.isEmpty());
-
             for (WSUser user : results) {
                 LOG.debug("User: " + user);
             }
         } catch (Exception e) {
             LOG.debug("Unknown exception!", e);
-
             t = e;
         }
-
         assertNull(t);
     }
 
     @Test
-    public void resolve() {
+    public void resolveUser() {
         Throwable t = null;
-
         try {
             String uid = provisioning.resolve("test2");
-
             assertEquals("test2", uid);
-        } catch (Exception e) {
+        } catch (ProvisioningException e) {
             LOG.debug("Unknown exception!", e);
-
             t = e;
         }
-
+        assertNull(t);
+    }
+    
+    @Test
+    public void resolveWrongUser() {
+        Throwable t = null;
+        try {
+            String uid = provisioning.resolve("wrong");
+            assertNull(uid);
+        } catch (ProvisioningException e) {
+            LOG.debug("Unknown exception!", e);
+            t = e;
+        }
+        assertNull(t);
+    }
+    
+    @Test
+    public void resolveRole() {
+        Throwable t = null;
+        try {
+            String uid = provisioning.resolve("roleOne");
+            assertEquals("roleOne", uid);
+        } catch (ProvisioningException e) {
+            LOG.debug("Unknown exception!", e);
+            t = e;
+        }
+        assertNull(t);
+    }
+    
+    @Test
+    public void resolveWrongRole() {
+        Throwable t = null;
+        try {
+            String uid = provisioning.resolve("wrong");
+            assertNull(uid);
+        } catch (ProvisioningException e) {
+            LOG.debug("Unknown exception!", e);
+            t = e;
+        }
         assertNull(t);
     }
 
     @Test
     public void getLatestChangeNumber() {
         Throwable t = null;
-
         try {
             int token = provisioning.getLatestChangeNumber();
-
             assertEquals(0, token);
-        } catch (Exception e) {
+        } catch (ProvisioningException e) {
             LOG.debug("Unknown exception!", e);
-
             t = e;
         }
-
         assertNull(t);
     }
 
@@ -315,9 +309,7 @@ public class ProvisioningTestITCase {
 
         try {
             List<WSChange> results = null;
-
             if (provisioning.isSyncSupported()) {
-
                 results = provisioning.sync();
                 assertNotNull(results);
 
@@ -325,11 +317,10 @@ public class ProvisioningTestITCase {
                     LOG.debug("Delta: " + change.getId());
                 }
             }
-        } catch (Exception e) {
+        } catch (ProvisioningException e) {
             LOG.debug("Unknown exception!", e);
             t = e;
         }
-
         assertNull(t);
     }
 }

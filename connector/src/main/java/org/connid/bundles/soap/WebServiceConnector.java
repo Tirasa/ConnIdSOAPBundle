@@ -118,10 +118,11 @@ public class WebServiceConnector implements
 
     /**
      * Gets the Configuration context for this connector.
+     * @return 
      */
     @Override
     public Configuration getConfiguration() {
-        return this.config;
+        return config;
     }
 
     /**
@@ -134,8 +135,8 @@ public class WebServiceConnector implements
     public void init(final Configuration cfg) {
         LOG.ok("Connector initialization");
 
-        this.config = (WebServiceConfiguration) cfg;
-        this.connection = new WebServiceConnection(this.config);
+        config = (WebServiceConfiguration) cfg;
+        connection = new WebServiceConnection(config);
     }
 
     /**
@@ -170,6 +171,11 @@ public class WebServiceConnector implements
 
     /**
      * {@inheritDoc}
+     * @param objectClass
+     * @param username
+     * @param password
+     * @param options
+     * @return 
      */
     @Override
     public Uid authenticate(
@@ -207,6 +213,10 @@ public class WebServiceConnector implements
 
     /**
      * {@inheritDoc}
+     * @param objClass
+     * @param attrs
+     * @param options
+     * @return 
      */
     @Override
     public Uid create(
@@ -296,6 +306,9 @@ public class WebServiceConnector implements
 
     /**
      * {@inheritDoc}
+     * @param objClass
+     * @param uid
+     * @param options
      */
     @Override
     public void delete(
@@ -327,6 +340,7 @@ public class WebServiceConnector implements
 
     /**
      * {@inheritDoc}
+     * @return 
      */
     @Override
     public Schema schema() {
@@ -399,6 +413,9 @@ public class WebServiceConnector implements
 
     /**
      * {@inheritDoc}
+     * @param oclass
+     * @param options
+     * @return 
      */
     @Override
     public FilterTranslator<Operand> createFilterTranslator(
@@ -414,6 +431,10 @@ public class WebServiceConnector implements
 
     /**
      * {@inheritDoc}
+     * @param objClass
+     * @param options
+     * @param query
+     * @param handler
      */
     @Override
     public void executeQuery(
@@ -478,6 +499,11 @@ public class WebServiceConnector implements
 
     /**
      * {@inheritDoc}
+     * @param objclass
+     * @param uid
+     * @param replaceAttributes
+     * @param options
+     * @return 
      */
     @Override
     public Uid update(final ObjectClass objclass,
@@ -560,6 +586,10 @@ public class WebServiceConnector implements
 
     /**
      * {@inheritDoc}
+     * @param objClass
+     * @param options
+     * @param token
+     * @param handler
      */
     @Override
     public void sync(
@@ -613,6 +643,8 @@ public class WebServiceConnector implements
 
     /**
      * {@inheritDoc}
+     * @param objectClass
+     * @return 
      */
     @Override
     public SyncToken getLatestSyncToken(final ObjectClass objectClass) {
@@ -644,7 +676,7 @@ public class WebServiceConnector implements
             final String username, final OperationOptions options) {
 
         // check objectclass
-        if (objectClass == null || (!objectClass.equals(ObjectClass.ACCOUNT))) {
+        if (objectClass == null) {
             throw new IllegalArgumentException("Invalid objectclass");
         }
 

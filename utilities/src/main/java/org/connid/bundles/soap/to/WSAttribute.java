@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WSAttribute extends AbstractData{
 
+    private static final long serialVersionUID = 8683029515931675933L;
+
     /**
      * The name of the attribute.
      */
@@ -63,7 +65,7 @@ public class WSAttribute extends AbstractData{
      * 
      * @param name defines the name of the attribute.
      */
-    public WSAttribute(String name) {
+    public WSAttribute(final String name) {
         this.name = name;
     }
 
@@ -73,7 +75,7 @@ public class WSAttribute extends AbstractData{
      * @param name defines the name of the attribute.
      * @param type defines the type of the attribute.
      */
-    public WSAttribute(String name, String type) {
+    public WSAttribute(final String name, final String type) {
         this.name = name;
         this.type = type;
     }
@@ -83,9 +85,9 @@ public class WSAttribute extends AbstractData{
      *
      * @param name defines the name of the attribute.
      * @param type defines the type of the attribute.
-     * @param isNullable defines if the attribute is nullable.
+     * @param nullable defines if the attribute is nullable.
      */
-    public WSAttribute(String name, String type, Boolean nullable) {
+    public WSAttribute(final String name, final String type, final Boolean nullable) {
         this.name = name;
         this.type = type;
         this.nullable = nullable;
@@ -95,7 +97,7 @@ public class WSAttribute extends AbstractData{
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -103,7 +105,7 @@ public class WSAttribute extends AbstractData{
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -111,7 +113,7 @@ public class WSAttribute extends AbstractData{
         return key;
     }
 
-    public void setKey(boolean key) {
+    public void setKey(final boolean key) {
         this.key = key;
         if(key)
             this.nullable = false;
@@ -121,7 +123,7 @@ public class WSAttribute extends AbstractData{
         return nullable;
     }
 
-    public void setNullable(boolean nullable) {
+    public void setNullable(final boolean nullable) {
         this.nullable = nullable;
     }
 
@@ -129,7 +131,7 @@ public class WSAttribute extends AbstractData{
         return password;
     }
 
-    public void setPassword(boolean password) {
+    public void setPassword(final boolean password) {
         this.password = password;
     }
 }

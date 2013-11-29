@@ -33,8 +33,10 @@ import org.apache.commons.lang.builder.ToStringStyle;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractData implements Serializable {
 
+    private static final long serialVersionUID = 1316712650556297033L;
+
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
 
@@ -45,7 +47,6 @@ public abstract class AbstractData implements Serializable {
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+        return ReflectionToStringBuilder.toString(this,ToStringStyle.MULTI_LINE_STYLE);
     }
 }

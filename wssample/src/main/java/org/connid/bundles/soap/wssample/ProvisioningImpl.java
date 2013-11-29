@@ -104,7 +104,7 @@ public class ProvisioningImpl implements Provisioning {
             LOG.debug("Services available");
 
             result = "OK";
-        } catch (Exception e) {
+        } catch (SQLException e) {
             LOG.debug("Services not available");
 
             result = "KO";
@@ -257,8 +257,7 @@ public class ProvisioningImpl implements Provisioning {
     }
 
     @Override
-    public String create(List<WSAttributeValue> data)
-            throws ProvisioningException {
+    public String create(final List<WSAttributeValue> data) throws ProvisioningException {
 
         LOG.debug("Create request received with data {}", data);
 
@@ -357,23 +356,34 @@ public class ProvisioningImpl implements Provisioning {
     }
 
     @Override
-    public String resolve(String username)
-            throws ProvisioningException {
+    public String resolve(final String username) throws ProvisioningException {
 
         LOG.debug("Resolve request operation received: " + username);
+
+        String resolved = "";
 
         Connection conn = null;
         try {
             conn = connect();
-            final Statement statement = conn.createStatement();
+            Statement statement = conn.createStatement();
 
             final String query = "SELECT userId FROM user WHERE userId='" + username + "';";
 
             LOG.debug("Execute query: " + query);
 
-            final ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery(query);
 
-            return rs.next() ? rs.getString(1) : null;
+            resolved = rs.next() ? rs.getString(1) : null;
+
+            if (resolved == null) {
+                statement = conn.createStatement();
+                final String roleQuery = "SELECT roleName FROM role WHERE roleName='" + username + "';";
+                LOG.debug("Execute query: " + roleQuery);
+
+                rs = statement.executeQuery(roleQuery);
+
+                resolved = rs.next() ? rs.getString(1) : null;
+            }
         } catch (SQLException e) {
             throw new ProvisioningException("Resolve operation failed", e);
         } finally {
@@ -385,6 +395,8 @@ public class ProvisioningImpl implements Provisioning {
                 }
             }
         }
+
+        return resolved;
     }
 
     @Override

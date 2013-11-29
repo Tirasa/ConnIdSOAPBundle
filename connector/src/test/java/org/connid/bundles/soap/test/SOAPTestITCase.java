@@ -24,14 +24,13 @@ package org.connid.bundles.soap.test;
 
 import static org.junit.Assert.*;
 
-import java.io.InputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.Set;
 import org.identityconnectors.common.IOUtil;
 import org.identityconnectors.common.security.GuardedString;
@@ -89,24 +88,9 @@ public class SOAPTestITCase {
      */
     @Before
     public void init() {
-        InputStream propStream = null;
-        try {
-            final Properties props = new Properties();
-            propStream = getClass().getResourceAsStream("/bundle.properties");
-            props.load(propStream);
-            bundleversion = props.getProperty("bundleversion");
-            bundledirectory = props.getProperty("bundledirectory");
-        } catch (Exception e) {
-            LOG.error("Could not load bundles.properties", e);
-        } finally {
-            if (propStream != null) {
-                try {
-                    propStream.close();
-                } catch (IOException e) {
-                    //ignore
-                }
-            }
-        }
+        final ResourceBundle resourceBundle = ResourceBundle.getBundle("bundle");
+        bundleversion = resourceBundle.getString("bundleversion");
+        bundledirectory = resourceBundle.getString("bundledirectory");
         assertNotNull(bundleversion);
         assertNotNull(bundledirectory);
 
@@ -115,7 +99,7 @@ public class SOAPTestITCase {
         for (String file : bundleDirectory.list()) {
             try {
                 urls.add(IOUtil.makeURL(bundleDirectory, file));
-            } catch (Exception ignore) {
+            } catch (IOException ignore) {
                 // ignore exception and don't add bundle
                 LOG.warn(ignore, "\"" + bundleDirectory.toString() + "/" + file + "\""
                         + " is not a valid connector bundle.");

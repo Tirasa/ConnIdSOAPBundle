@@ -34,6 +34,8 @@ import org.identityconnectors.framework.common.FrameworkUtil;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WSAttributeValue extends WSAttribute {
 
+    private static final long serialVersionUID = 8850711594062996107L;
+
     private List<Object> values = null;
 
     private List<Object> evaluatedTypeValues = null;
@@ -42,7 +44,7 @@ public class WSAttributeValue extends WSAttribute {
         super();
     }
 
-    public WSAttributeValue(WSAttribute wsAttribute) {
+    public WSAttributeValue(final WSAttribute wsAttribute) {
         super();
 
         if (wsAttribute != null) {

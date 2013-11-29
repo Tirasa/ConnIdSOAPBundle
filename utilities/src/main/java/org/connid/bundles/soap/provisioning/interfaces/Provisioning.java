@@ -88,7 +88,7 @@ public interface Provisioning {
     /**
      * Creates user account.
      *
-     * @param a set of account attributes.
+     * @param data set of account attributes.
      * @return accountid of the account created.
      * @throws ProvisioningException in case of failure.
      */
@@ -100,7 +100,7 @@ public interface Provisioning {
      * Updates user account.
      *
      * @param accountid.
-     * @param a set of attributes to be updated.
+     * @param data set of attributes to be updated.
      * @return accountid.
      * @throws ProvisioningException in case of failure
      */
