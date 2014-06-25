@@ -60,17 +60,14 @@
       <groupId>org.connid</groupId>
       <artifactId>connid-framework</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.connid</groupId>
       <artifactId>connid-framework-internal</artifactId>
     </dependency>
 
-    <!-- to be excluded to deploy on jetty and test the connector -->
     <dependency>
       <groupId>org.apache.geronimo.specs</groupId>
       <artifactId>geronimo-activation_1.1_spec</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <!-- utilities -->
@@ -84,21 +81,15 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <scope>test</scope>
-      <type>jar</type>
-    </dependency>
-        
+    </dependency>        
     <dependency>
       <groupId>org.connid</groupId>
       <artifactId>connid-test-common</artifactId>
-      <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-    </dependency>
-        
+    </dependency>        
   </dependencies>
 
   <build>
