@@ -30,7 +30,7 @@
   <parent>
     <groupId>org.connid.bundles.soap</groupId>
     <artifactId>soap</artifactId>
-    <version>1.2.8</version>
+    <version>1.2.9-SNAPSHOT</version>
   </parent>
 
   <groupId>org.connid.bundles.soap</groupId>
