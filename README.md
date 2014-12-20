@@ -15,7 +15,7 @@ The Active Directory bundle (JNDI implementation) is part of the [ConnId](http:/
 </dependency>
 ```
 
-where `connid.soap.version` is one of [available](http://repo1.maven.org/maven2/org/connid/bundles/soap/net.tirasa.connid.bundles.soap/).
+where `connid.soap.version` is one of [available](http://repo1.maven.org/maven2/net/tirasa/connid/bundles/soap/net.tirasa.connid.bundles.soap/).
 
 ### Downloads
 
