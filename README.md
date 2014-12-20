@@ -1,7 +1,7 @@
 ConnIdSOAPBundle
 ==============
 
-The Active Directory bundle (JNDI implementation) is part of the [ConnId](http://connid.tirasa.net) project.
+The SOAP bundle is part of the [ConnId](http://connid.tirasa.net) project.
 
 ## How to get it
 
