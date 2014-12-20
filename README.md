@@ -9,13 +9,13 @@ The Active Directory bundle (JNDI implementation) is part of the [ConnId](http:/
 
 ```XML
 <dependency>
-  <groupId>org.connid.bundles.soap</groupId>
-  <artifactId>org.connid.bundles.soap</artifactId>
+  <groupId>net.tirasa.connid.bundles.soap</groupId>
+  <artifactId>net.tirasa.connid.bundles.soap</artifactId>
   <version>${connid.soap.version}</version>
 </dependency>
 ```
 
-where `connid.soap.version` is one of [available](http://repo1.maven.org/maven2/org/connid/bundles/soap/org.connid.bundles.soap/).
+where `connid.soap.version` is one of [available](http://repo1.maven.org/maven2/org/connid/bundles/soap/net.tirasa.connid.bundles.soap/).
 
 ### Downloads
 
