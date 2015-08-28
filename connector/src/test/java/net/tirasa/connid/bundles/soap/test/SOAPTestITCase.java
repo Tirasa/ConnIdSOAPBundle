@@ -15,7 +15,11 @@
  */
 package net.tirasa.connid.bundles.soap.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -154,14 +158,12 @@ public class SOAPTestITCase {
         assertNotNull(connector);
 
         // Make sure we have set up the Configuration properly
-        Exception e = null;
         try {
             connector.validate();
             connector.test();
-        } catch (RuntimeException re) {
-            e = re;
+        } catch (RuntimeException e) {
+            fail(e.getMessage());
         }
-        assertNull(e);
     }
 
     /**

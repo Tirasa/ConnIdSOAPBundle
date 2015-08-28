@@ -23,7 +23,7 @@
   <parent>
     <groupId>net.tirasa.connid.bundles.soap</groupId>
     <artifactId>soap</artifactId>
-    <version>1.3.1-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
   </parent>
     
   <groupId>net.tirasa.connid.bundles.soap</groupId>
@@ -41,6 +41,12 @@
     <dependency>
       <groupId>javax.servlet.jsp</groupId>
       <artifactId>jsp-api</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>javax.xml.ws</groupId>
+      <artifactId>jaxws-api</artifactId>
+      <version>2.2.11</version>
     </dependency>
 
     <dependency>
@@ -101,7 +107,7 @@
     <!-- utilities -->
     <dependency>
       <groupId>net.tirasa.connid.bundles.soap</groupId>
-      <artifactId>utilities</artifactId>
+      <artifactId>soap-utilities</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -124,9 +130,7 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
       <scope>test</scope>
-      <type>jar</type>
     </dependency>
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -134,10 +138,45 @@
     </dependency>
   </dependencies>
 
-
   <build>
     <plugins>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <inherited>true</inherited>
+        <configuration>
+          <webResources>
+            <resource>
+              <directory>src/main/webapp</directory>
+              <includes>
+                <include>**/*.jsp</include>
+                <include>WEB-INF/web.xml</include>
+              </includes>
+              <filtering>true</filtering>
+            </resource>
+            <!--
+                 HACK: Include legal files explicity, otherwise they will end up in the wrong path
+                       or in another jar file in the war.
+            -->
+            <resource>
+              <directory>${project.build.outputDirectory}</directory>
+              <includes>
+                <include>META-INF/DEPENDENCIES*</include>
+              </includes>
+            </resource>
+            <resource>
+              <directory>${basedir}/..</directory>
+              <targetPath>META-INF</targetPath>
+              <includes>
+                <include>LICENSE</include>
+                <include>NOTICE</include>
+              </includes>
+            </resource>
+          </webResources>
+          <packagingExcludes>WEB-INF/classes/META-INF/LICENSE*,WEB-INF/classes/META-INF/NOTICE*,WEB-INF/classes/META-INF/DEPENDENCIES*</packagingExcludes>
+        </configuration>
+      </plugin>
+        
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
@@ -155,41 +194,34 @@
       </plugin>
 
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <inherited>true</inherited>
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopKey>foo</stopKey>
           <stopPort>9999</stopPort>
 
-          <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>8888</port>
-              <maxIdleTime>60000</maxIdleTime>
-            </connector>
-          </connectors>
-                    
-          <contextPath>/wssample</contextPath>
-        </configuration>
+          <httpConnector>
+            <port>8888</port>
+          </httpConnector>
 
+          <webApp>
+            <contextPath>/wssample</contextPath>
+          </webApp>
+        </configuration>
         <executions>
           <execution>
             <id>start-jetty</id>
             <phase>pre-integration-test</phase>
-
+                        
             <goals>
-              <goal>run-war</goal>
+              <goal>deploy-war</goal>
             </goals>
 
             <configuration>
               <scanIntervalSeconds>0</scanIntervalSeconds>
               <daemon>true</daemon>
-              <systemProperties>
-                <systemProperty>
-                  <name>logback.configurationFile</name>
-                  <value>file:${project.build.directory}/classes/logback.xml</value>
-                </systemProperty>
-              </systemProperties>
             </configuration>
           </execution>
           <execution>
@@ -207,14 +239,6 @@
       <resource>
         <directory>src/main/resources</directory>
         <filtering>false</filtering>
-      </resource>
-      <resource>
-        <directory>..</directory>
-        <targetPath>META-INF</targetPath>
-        <includes>
-          <include>LICENSE</include>
-          <include>NOTICE</include>
-        </includes>
       </resource>
     </resources>
   </build>

@@ -23,7 +23,7 @@
   <parent>
     <groupId>net.tirasa.connid.bundles.soap</groupId>
     <artifactId>soap</artifactId>
-    <version>1.3.1-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
   </parent>
 
   <groupId>net.tirasa.connid.bundles.soap</groupId>
@@ -66,7 +66,7 @@
     <!-- utilities -->
     <dependency>
       <groupId>net.tirasa.connid.bundles.soap</groupId>
-      <artifactId>utilities</artifactId>
+      <artifactId>soap-utilities</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -172,22 +172,22 @@
       </plugin>
 
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <inherited>true</inherited>
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopKey>foo</stopKey>
           <stopPort>9999</stopPort>
 
-          <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>8888</port>
-              <maxIdleTime>60000</maxIdleTime>
-            </connector>
-          </connectors>
+          <httpConnector>
+            <port>8888</port>
+          </httpConnector>
 
-          <webApp>../wssample/target/wssample-${project.version}.war</webApp>
-          <contextPath>/wssample</contextPath>
+          <war>../wssample/target/wssample-${project.version}.war</war>
+          <webApp>
+            <contextPath>/wssample</contextPath>
+          </webApp>
         </configuration>
         <executions>
           <execution>
@@ -195,7 +195,7 @@
             <phase>pre-integration-test</phase>
                         
             <goals>
-              <goal>run-war</goal>
+              <goal>deploy-war</goal>
             </goals>
 
             <configuration>
