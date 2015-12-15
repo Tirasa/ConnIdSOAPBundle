@@ -33,6 +33,10 @@
 
   <packaging>war</packaging>
 
+  <properties>
+    <rootpom.basedir>${basedir}/..</rootpom.basedir>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>

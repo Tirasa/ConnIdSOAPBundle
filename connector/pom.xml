@@ -34,8 +34,9 @@
   <packaging>jar</packaging>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <bundles.directory>${project.build.directory}/bundles</bundles.directory>
+
+    <rootpom.basedir>${basedir}/..</rootpom.basedir>
   </properties>
 
   <dependencies>
