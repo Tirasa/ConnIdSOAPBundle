@@ -53,11 +53,6 @@
       <version>2.2.11</version>
     </dependency>
 
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-    </dependency>
-
     <!-- Logger -->
     <dependency>
       <groupId>org.slf4j</groupId>

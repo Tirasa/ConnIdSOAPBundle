@@ -18,28 +18,10 @@ package net.tirasa.connid.bundles.soap.to;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractData implements Serializable {
 
     private static final long serialVersionUID = 1316712650556297033L;
 
-    @Override
-    public boolean equals(final Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this,ToStringStyle.MULTI_LINE_STYLE);
-    }
 }
