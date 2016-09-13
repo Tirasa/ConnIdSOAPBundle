@@ -26,7 +26,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class WSAttribute extends AbstractData{
+public class WSAttribute extends AbstractData {
+
+    private static final long serialVersionUID = 8683029515931675933L;
 
     /**
      * The name of the attribute.
@@ -60,7 +62,7 @@ public class WSAttribute extends AbstractData{
 
     /**
      * Constructor: default attribute is a string nullable.
-     * 
+     *
      * @param name defines the name of the attribute.
      */
     public WSAttribute(String name) {
@@ -83,7 +85,7 @@ public class WSAttribute extends AbstractData{
      *
      * @param name defines the name of the attribute.
      * @param type defines the type of the attribute.
-     * @param isNullable defines if the attribute is nullable.
+     * @param nullable defines if the attribute is nullable.
      */
     public WSAttribute(String name, String type, Boolean nullable) {
         this.name = name;
@@ -113,8 +115,9 @@ public class WSAttribute extends AbstractData{
 
     public void setKey(boolean key) {
         this.key = key;
-        if(key)
+        if (key) {
             this.nullable = false;
+        }
     }
 
     public boolean isNullable() {

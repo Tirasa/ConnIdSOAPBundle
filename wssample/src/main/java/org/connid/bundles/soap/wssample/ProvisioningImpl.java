@@ -33,7 +33,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.jws.WebService;
-import org.apache.commons.lang.StringUtils;
 import org.connid.bundles.soap.exceptions.ProvisioningException;
 import org.connid.bundles.soap.provisioning.interfaces.Provisioning;
 import org.connid.bundles.soap.to.WSAttribute;
@@ -41,6 +40,7 @@ import org.connid.bundles.soap.to.WSAttributeValue;
 import org.connid.bundles.soap.to.WSChange;
 import org.connid.bundles.soap.to.WSUser;
 import org.connid.bundles.soap.utilities.Operand;
+import org.identityconnectors.common.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -226,7 +226,7 @@ public class ProvisioningImpl implements Provisioning {
                 for (int i = 0; i < metaData.getColumnCount(); i++) {
                     WSAttributeValue attr = new WSAttributeValue();
                     attr.setName(metaData.getColumnLabel(i + 1));
-                    if (StringUtils.isNotBlank(rs.getString(i + 1))) {
+                    if (StringUtil.isNotBlank(rs.getString(i + 1))) {
                         attr.addValue(rs.getString(i + 1));
                     }
                     if ("userId".equalsIgnoreCase(metaData.getColumnName(i + 1))) {
