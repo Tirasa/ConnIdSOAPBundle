@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import org.apache.commons.lang.StringUtils;
 
 import org.apache.cxf.binding.soap.Soap11;
 import org.apache.cxf.binding.soap.Soap12;
@@ -32,6 +31,7 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.service.model.BindingOperationInfo;
+import org.identityconnectors.common.StringUtil;
 
 /**
  * This interceptor is responsible for setting up the SOAP version and header, so that this is available to any
@@ -87,7 +87,7 @@ public class ForceSoapActionOutInterceptor extends AbstractSoapInterceptor {
             }
         } else if (message.getVersion() instanceof Soap12 && !"\"\"".equals(action)) {
             String contentType = (String) message.get(Message.CONTENT_TYPE);
-            if (contentType.indexOf("action=\"") == -1) {
+            if (!contentType.contains("action=\"")) {
                 contentType = new StringBuilder().append(contentType).append("; action=").append(action).toString();
                 message.put(Message.CONTENT_TYPE, contentType);
             }
@@ -110,7 +110,7 @@ public class ForceSoapActionOutInterceptor extends AbstractSoapInterceptor {
 
                 final SoapOperationInfo soi = boi.getExtensor(SoapOperationInfo.class);
 
-                action = soi == null || StringUtils.isBlank(soi.getAction()) || StringUtils.isBlank(SOAPActionUriPrefix)
+                action = soi == null || StringUtil.isBlank(soi.getAction()) || StringUtil.isBlank(SOAPActionUriPrefix)
                         ? "\"\"" : (SOAPActionUriPrefix + soi.getAction());
             }
         }
