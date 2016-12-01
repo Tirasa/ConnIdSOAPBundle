@@ -3,6 +3,11 @@ ConnIdSOAPBundle
 
 The SOAP bundle is part of the [ConnId](http://connid.tirasa.net) project.
 
+<a href="https://travis-ci.org/Tirasa/ConnIdSOAPBundle"><img src="https://api.travis-ci.org/Tirasa/ConnIdSOAPBundle.png"/></a>
+<a href="https://maven-badges.herokuapp.com/maven-central/net.tirasa.connid.bundles.soap/net.tirasa.connid.bundles.soap">
+  <img src="https://maven-badges.herokuapp.com/maven-central/net.tirasa.connid.bundles.soap/net.tirasa.connid.bundles.soap/badge.svg"/>
+</a>
+
 ## How to get it
 
 ### Maven
@@ -25,4 +30,3 @@ Available from [releases](https://github.com/Tirasa/ConnIdSOAPBundle/releases).
 
  * [wiki](https://connid.atlassian.net/wiki/display/BASE/SOAP)
  * [issues](https://connid.atlassian.net/browse/SOAP)
- * <a href="https://travis-ci.org/Tirasa/ConnIdSOAPBundle"><img src="https://api.travis-ci.org/Tirasa/ConnIdSOAPBundle.png"/></a>
