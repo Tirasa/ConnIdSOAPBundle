@@ -42,6 +42,11 @@
   <dependencies>
     <!-- CXF -->
     <dependency>
+      <groupId>org.glassfish.main.javaee-api</groupId>
+      <artifactId>javax.jws</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxws</artifactId>
     </dependency>
