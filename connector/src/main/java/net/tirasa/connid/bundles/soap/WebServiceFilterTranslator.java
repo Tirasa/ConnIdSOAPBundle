@@ -21,10 +21,13 @@ import net.tirasa.connid.bundles.soap.utilities.Operand;
 import net.tirasa.connid.bundles.soap.utilities.Operator;
 import org.identityconnectors.framework.common.objects.AttributeUtil;
 import org.identityconnectors.common.StringUtil;
+import org.identityconnectors.framework.common.objects.Attribute;
+import org.identityconnectors.framework.common.objects.AttributeBuilder;
 import org.identityconnectors.framework.common.objects.filter.AbstractFilterTranslator;
 import org.identityconnectors.framework.common.objects.filter.ContainsFilter;
 import org.identityconnectors.framework.common.objects.filter.EndsWithFilter;
 import org.identityconnectors.framework.common.objects.filter.EqualsFilter;
+import org.identityconnectors.framework.common.objects.filter.EqualsIgnoreCaseFilter;
 import org.identityconnectors.framework.common.objects.filter.GreaterThanFilter;
 import org.identityconnectors.framework.common.objects.filter.GreaterThanOrEqualFilter;
 import org.identityconnectors.framework.common.objects.filter.LessThanFilter;
@@ -128,6 +131,18 @@ public class WebServiceFilterTranslator extends AbstractFilterTranslator<Operand
         operands.add(rightExpression);
 
         return new Operand(Operator.AND, operands);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Operand createEqualsIgnoreCaseExpression(EqualsIgnoreCaseFilter filter, boolean not) {
+        // Simply reverting to EqualsFilter
+        Attribute attr = filter.getValue() == null
+                ? AttributeBuilder.build(filter.getName())
+                : AttributeBuilder.build(filter.getName(), filter.getValue());
+        return createEqualsExpression(new EqualsFilter(attr), not);
     }
 
     /**
