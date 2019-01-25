@@ -23,7 +23,7 @@
   <parent>
     <groupId>net.tirasa.connid.bundles.soap</groupId>
     <artifactId>soap</artifactId>
-    <version>1.4.3-SNAPSHOT</version>
+    <version>1.4.3</version>
   </parent>
 
   <groupId>net.tirasa.connid.bundles.soap</groupId>
