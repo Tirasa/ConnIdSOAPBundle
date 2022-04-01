@@ -42,11 +42,6 @@
   <dependencies>
     <!-- CXF -->
     <dependency>
-      <groupId>org.glassfish.main.javaee-api</groupId>
-      <artifactId>javax.jws</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxws</artifactId>
     </dependency>
@@ -182,6 +177,7 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <inherited>true</inherited>
         <configuration>
+          <supportedPackagings>jar</supportedPackagings>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopKey>foo</stopKey>
           <stopPort>9999</stopPort>
@@ -190,7 +186,7 @@
             <port>8888</port>
           </httpConnector>
 
-          <war>../wssample/target/wssample-${project.version}.war</war>
+          <war>${basedir}/../wssample/target/wssample-${project.version}.war</war>
           <webApp>
             <contextPath>/wssample</contextPath>
           </webApp>
@@ -199,11 +195,9 @@
           <execution>
             <id>start-jetty</id>
             <phase>pre-integration-test</phase>
-                        
             <goals>
               <goal>deploy-war</goal>
             </goals>
-
             <configuration>
               <scanIntervalSeconds>0</scanIntervalSeconds>
               <daemon>true</daemon>
