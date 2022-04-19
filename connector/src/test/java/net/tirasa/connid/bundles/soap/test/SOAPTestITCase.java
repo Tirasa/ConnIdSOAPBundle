@@ -15,11 +15,11 @@
  */
 package net.tirasa.connid.bundles.soap.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.util.AssertionErrors.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,11 +54,11 @@ import org.identityconnectors.framework.common.objects.Schema;
 import org.identityconnectors.framework.common.objects.Uid;
 import org.identityconnectors.framework.common.objects.filter.Filter;
 import org.identityconnectors.framework.common.objects.filter.FilterBuilder;
-import org.junit.Before;
-import org.junit.Test;
 import net.tirasa.connid.bundles.soap.WebServiceConnector;
 import net.tirasa.connid.bundles.soap.provisioning.interfaces.Provisioning;
 import org.identityconnectors.common.logging.Log;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SOAPTestITCase {
 
@@ -83,7 +83,7 @@ public class SOAPTestITCase {
     /**
      * Uses the ConnectorInfoManager to retrieve a ConnectorInfo object for the connector.
      */
-    @Before
+    @BeforeEach
     public void init() {
         final ResourceBundle resourceBundle = ResourceBundle.getBundle("bundle");
         bundleversion = resourceBundle.getString("bundleversion");
@@ -92,13 +92,13 @@ public class SOAPTestITCase {
         assertNotNull(bundledirectory);
 
         final File bundleDirectory = new File(bundledirectory);
-        final List<URL> urls = new ArrayList<URL>();
-        for (String file : bundleDirectory.list()) {
+        final List<URL> urls = new ArrayList<>();
+        for (String filename : bundleDirectory.list((file, name) -> name.endsWith("-bundle.jar"))) {
             try {
-                urls.add(IOUtil.makeURL(bundleDirectory, file));
+                urls.add(IOUtil.makeURL(bundleDirectory, filename));
             } catch (IOException ignore) {
                 // ignore exception and don't add bundle
-                LOG.warn(ignore, "\"" + bundleDirectory.toString() + "/" + file + "\""
+                LOG.warn(ignore, "\"" + bundleDirectory.toString() + "/" + filename + "\""
                         + " is not a valid connector bundle.");
             }
         }
@@ -206,15 +206,11 @@ public class SOAPTestITCase {
      */
     @Test
     public void search() {
-        final List<ConnectorObject> results = new ArrayList<ConnectorObject>();
+        final List<ConnectorObject> results = new ArrayList<>();
 
-        final ResultsHandler resultsHandler = new ResultsHandler() {
-
-            @Override
-            public boolean handle(final ConnectorObject obj) {
-                results.add(obj);
-                return true;
-            }
+        ResultsHandler resultsHandler = obj -> {
+            results.add(obj);
+            return true;
         };
 
         final Filter usernameFilter = FilterBuilder.startsWith(AttributeBuilder.build("USERID", "test"));
@@ -245,7 +241,7 @@ public class SOAPTestITCase {
      */
     @Test
     public void create() {
-        final Set<Attribute> attrs = new HashSet<Attribute>();
+        final Set<Attribute> attrs = new HashSet<>();
         attrs.add(new Name(TESTUSER));
 
         attrs.add(AttributeBuilder.buildPassword("TESTPASSWORD".toCharArray()));
@@ -267,7 +263,7 @@ public class SOAPTestITCase {
      */
     @Test
     public void update() {
-        final Set<Attribute> attrs = new HashSet<Attribute>();
+        final Set<Attribute> attrs = new HashSet<>();
         attrs.add(new Name(TESTUSER));
 
         attrs.add(AttributeBuilder.buildPassword("NEWPASSWORD".toCharArray()));

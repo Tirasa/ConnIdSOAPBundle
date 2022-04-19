@@ -59,11 +59,6 @@
       <artifactId>connector-framework-internal</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-activation_1.1_spec</artifactId>
-    </dependency>
-
     <!-- utilities -->
     <dependency>
       <groupId>net.tirasa.connid.bundles.soap</groupId>
@@ -81,9 +76,10 @@
       <artifactId>connector-test-common</artifactId>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>        
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -93,14 +89,14 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <inherited>true</inherited>
-        <configuration>
-          <redirectTestOutputToFile>true</redirectTestOutputToFile>
-        </configuration>
       </plugin>
+
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
+        <inherited>true</inherited>
         <configuration>
-          <appendAssemblyId>false</appendAssemblyId>
+          <appendAssemblyId>true</appendAssemblyId>
           <descriptors>
             <descriptor>src/assemble/connector.xml</descriptor>
           </descriptors>
@@ -111,8 +107,8 @@
               <ConnectorBundle-Name>${project.artifactId}</ConnectorBundle-Name>
               <ConnectorBundle-Version>${project.version}</ConnectorBundle-Version>
             </manifestEntries>
-          </archive>                   
-        </configuration>               
+          </archive>
+        </configuration>
         <executions>
           <execution>
             <id>make-assembly</id>
@@ -159,17 +155,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <inherited>true</inherited>
-        <configuration>
-          <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <encoding>utf-8</encoding>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>

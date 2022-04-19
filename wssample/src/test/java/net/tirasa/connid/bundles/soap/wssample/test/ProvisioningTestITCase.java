@@ -15,10 +15,10 @@
  */
 package net.tirasa.connid.bundles.soap.wssample.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,16 +32,16 @@ import net.tirasa.connid.bundles.soap.to.WSUser;
 import net.tirasa.connid.bundles.soap.utilities.Operand;
 import net.tirasa.connid.bundles.soap.utilities.Operator;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "classpath:wssampleContext.xml" })
 public class ProvisioningTestITCase {
 
@@ -52,7 +52,7 @@ public class ProvisioningTestITCase {
 
     private Provisioning provisioning;
 
-    @Before
+    @BeforeEach
     public void init() {
         provisioning = (Provisioning) proxyFactory.create();
     }
@@ -134,7 +134,7 @@ public class ProvisioningTestITCase {
             birthdate.setName("birthdate");
             birthdate.addValue("01/01/1990");
 
-            List<WSAttributeValue> attrs = new ArrayList<WSAttributeValue>();
+            List<WSAttributeValue> attrs = new ArrayList<>();
             attrs.add(uid);
             attrs.add(password);
             attrs.add(type);
@@ -167,7 +167,7 @@ public class ProvisioningTestITCase {
             name.setName("name");
             name.addValue("pino");
 
-            List<WSAttributeValue> attrs = new ArrayList<WSAttributeValue>();
+            List<WSAttributeValue> attrs = new ArrayList<>();
             attrs.add(surname);
             attrs.add(name);
 
@@ -203,18 +203,18 @@ public class ProvisioningTestITCase {
             Operand op2 = new Operand(Operator.EQ, "surname", "Bianchi");
             Operand op3 = new Operand(Operator.EQ, "surname", "Rossi");
 
-            Set<Operand> sop1 = new HashSet<Operand>();
+            Set<Operand> sop1 = new HashSet<>();
             sop1.add(op1);
             sop1.add(op2);
 
-            Set<Operand> sop2 = new HashSet<Operand>();
+            Set<Operand> sop2 = new HashSet<>();
             sop2.add(op1);
             sop2.add(op3);
 
             Operand op4 = new Operand(Operator.AND, sop1);
             Operand op5 = new Operand(Operator.AND, sop2);
 
-            Set<Operand> sop = new HashSet<Operand>();
+            Set<Operand> sop = new HashSet<>();
             sop.add(op4);
             sop.add(op5);
 
@@ -304,9 +304,8 @@ public class ProvisioningTestITCase {
         Throwable t = null;
 
         try {
-            List<WSChange> results = null;
             if (provisioning.isSyncSupported()) {
-                results = provisioning.sync();
+                List<WSChange> results = provisioning.sync();
                 assertNotNull(results);
 
                 for (WSChange change : results) {
