@@ -51,11 +51,11 @@ public class WSAttributeValue extends WSAttribute {
 
     public List<Object> getValues() {
         if (this.values == null) {
-            this.values = new ArrayList<Object>();
+            this.values = new ArrayList<>();
         }
 
         if (evaluatedTypeValues == null) {
-            evaluatedTypeValues = new ArrayList<Object>();
+            evaluatedTypeValues = new ArrayList<>();
 
             for (Object obj : values) {
                 try {
@@ -76,7 +76,7 @@ public class WSAttributeValue extends WSAttribute {
 
     public final boolean addValue(final Object value) {
         if (this.values == null) {
-            this.values = new ArrayList<Object>();
+            this.values = new ArrayList<>();
         }
 
         return this.values.add(value);
