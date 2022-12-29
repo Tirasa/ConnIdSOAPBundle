@@ -15,6 +15,7 @@
  */
 package net.tirasa.connid.bundles.soap.wssample;
 
+import jakarta.jws.WebService;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -25,7 +26,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.jws.WebService;
 import net.tirasa.connid.bundles.soap.exceptions.ProvisioningException;
 import net.tirasa.connid.bundles.soap.provisioning.interfaces.Provisioning;
 import net.tirasa.connid.bundles.soap.to.WSAttribute;

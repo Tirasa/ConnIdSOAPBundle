@@ -15,13 +15,13 @@
  */
 package net.tirasa.connid.bundles.soap.to;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import org.identityconnectors.framework.common.FrameworkUtil;
 
 @XmlAccessorType(XmlAccessType.FIELD)

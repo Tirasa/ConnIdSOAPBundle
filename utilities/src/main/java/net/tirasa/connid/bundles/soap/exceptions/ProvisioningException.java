@@ -15,9 +15,9 @@
  */
 package net.tirasa.connid.bundles.soap.exceptions;
 
+import jakarta.xml.ws.WebFault;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.xml.ws.WebFault;
 
 @WebFault(name = "ProvisioningException")
 public class ProvisioningException extends Exception {

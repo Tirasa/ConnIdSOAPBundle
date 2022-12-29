@@ -23,7 +23,7 @@
   <parent>
     <groupId>net.tirasa.connid.bundles.soap</groupId>
     <artifactId>soap</artifactId>
-    <version>1.4.6-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
   </parent>
 
   <groupId>net.tirasa.connid.bundles.soap</groupId>
@@ -164,8 +164,8 @@
             <port>8888</port>
           </httpConnector>
 
-          <war>${basedir}/../wssample/target/wssample-${project.version}.war</war>
           <webApp>
+            <war>${basedir}/../wssample/target/wssample-${project.version}.war</war>
             <contextPath>/wssample</contextPath>
           </webApp>
         </configuration>
@@ -174,7 +174,7 @@
             <id>start-jetty</id>
             <phase>pre-integration-test</phase>
             <goals>
-              <goal>deploy-war</goal>
+              <goal>start-war</goal>
             </goals>
             <configuration>
               <scanIntervalSeconds>0</scanIntervalSeconds>

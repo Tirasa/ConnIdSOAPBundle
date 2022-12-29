@@ -15,12 +15,12 @@
  */
 package net.tirasa.connid.bundles.soap.provisioning.interfaces;
 
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebParam;
+import jakarta.jws.WebService;
+import jakarta.xml.ws.BindingType;
+import jakarta.xml.ws.soap.SOAPBinding;
 import java.util.List;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.xml.ws.BindingType;
-import javax.xml.ws.soap.SOAPBinding;
 import net.tirasa.connid.bundles.soap.exceptions.ProvisioningException;
 import net.tirasa.connid.bundles.soap.to.WSAttribute;
 import net.tirasa.connid.bundles.soap.to.WSAttributeValue;
@@ -58,8 +58,8 @@ public interface Provisioning {
      */
     @WebMethod(operationName = "authenticate", action = "authenticate")
     String authenticate(
-            @WebParam(name = "username") final String username,
-            @WebParam(name = "password") final String password)
+            @WebParam(name = "username") String username,
+            @WebParam(name = "password") String password)
             throws ProvisioningException;
 
     /**
@@ -86,7 +86,7 @@ public interface Provisioning {
      * @throws ProvisioningException in case of failure.
      */
     @WebMethod(operationName = "create", action = "create")
-    String create(@WebParam(name = "data") final List<WSAttributeValue> data)
+    String create(@WebParam(name = "data") List<WSAttributeValue> data)
             throws ProvisioningException;
 
     /**
@@ -99,8 +99,8 @@ public interface Provisioning {
      */
     @WebMethod(operationName = "update", action = "update")
     String update(
-            @WebParam(name = "accountid") final String accountid,
-            @WebParam(name = "data") final List<WSAttributeValue> data)
+            @WebParam(name = "accountid") String accountid,
+            @WebParam(name = "data") List<WSAttributeValue> data)
             throws ProvisioningException;
 
     /**
@@ -111,7 +111,7 @@ public interface Provisioning {
      * @throws ProvisioningException in case of failure.
      */
     @WebMethod(operationName = "delete", action = "delete")
-    String delete(@WebParam(name = "accountid") final String accountid)
+    String delete(@WebParam(name = "accountid") String accountid)
             throws ProvisioningException;
 
     /**
@@ -121,7 +121,7 @@ public interface Provisioning {
      * @return a set of user accounts.
      */
     @WebMethod(operationName = "query", action = "query")
-    List<WSUser> query(@WebParam(name = "query") final Operand query);
+    List<WSUser> query(@WebParam(name = "query") Operand query);
 
     /**
      * Returns accountid related to the specified username.
@@ -131,7 +131,7 @@ public interface Provisioning {
      * @throws ProvisioningException in case of failure.
      */
     @WebMethod(operationName = "resolve", action = "resolve")
-    String resolve(@WebParam(name = "username") final String username)
+    String resolve(@WebParam(name = "username") String username)
             throws ProvisioningException;
 
     /**

@@ -23,7 +23,7 @@
   <parent>
     <groupId>net.tirasa.connid.bundles.soap</groupId>
     <artifactId>soap</artifactId>
-    <version>1.4.6-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
   </parent>
     
   <groupId>net.tirasa.connid.bundles.soap</groupId>
@@ -39,12 +39,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet.jsp</groupId>
-      <artifactId>javax.servlet.jsp-api</artifactId>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Logger -->
@@ -186,7 +183,7 @@
             <id>start-jetty</id>
             <phase>pre-integration-test</phase>
             <goals>
-              <goal>deploy-war</goal>
+              <goal>start-war</goal>
             </goals>
             <configuration>
               <scanIntervalSeconds>0</scanIntervalSeconds>

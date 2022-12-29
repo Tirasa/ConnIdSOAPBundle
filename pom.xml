@@ -23,12 +23,12 @@
   <parent>
     <groupId>net.tirasa.connid</groupId>
     <artifactId>connid</artifactId>
-    <version>1.5.1.0</version>
+    <version>1.6.0.0-SNAPSHOT</version>
   </parent>
 
   <groupId>net.tirasa.connid.bundles.soap</groupId>
   <artifactId>soap</artifactId>
-  <version>1.4.6-SNAPSHOT</version>
+  <version>1.5.0-SNAPSHOT</version>
 
   <name>ConnId Bundles: SOAP</name>
 
@@ -76,35 +76,29 @@
   </mailingLists>
 
   <properties>
-    <connid.version>1.5.1.0</connid.version>
+    <connid.version>1.6.0.0-SNAPSHOT</connid.version>
 
-    <cxf.version>3.5.5</cxf.version>
-    <spring.version>5.3.24</spring.version>
-        
+    <cxf.version>4.0.0</cxf.version>
+    <spring.version>6.0.3</spring.version>
+
     <hsqldb.version>2.7.1</hsqldb.version>
     <dbunit.version>2.7.3</dbunit.version>
 
-    <logback.version>1.2.11</logback.version>
+    <logback.version>1.4.5</logback.version>
 
     <junit.version>5.9.1</junit.version>
 
-    <targetJdk>11</targetJdk>
+    <targetJdk>17</targetJdk>
     <rootpom.basedir>${basedir}</rootpom.basedir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencyManagement>
     <dependencies>
-      <dependency> 
-        <groupId>javax.servlet</groupId> 
-        <artifactId>javax.servlet-api</artifactId> 
-        <version>3.1.0</version>
-        <scope>provided</scope>
-      </dependency>
       <dependency>
-        <groupId>javax.servlet.jsp</groupId>
-        <artifactId>javax.servlet.jsp-api</artifactId>
-        <version>2.3.1</version>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>6.0.0</version>
         <scope>provided</scope>
       </dependency>
 
@@ -124,12 +118,6 @@
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-rt-frontend-jaxws</artifactId>
         <version>${cxf.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>jakarta.activation</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.cxf</groupId>
@@ -233,9 +221,39 @@
         </plugin>
 
         <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>ianal-maven-plugin</artifactId>
+          <inherited>true</inherited>
+          <executions>
+            <execution>
+              <phase>none</phase>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.geronimo.genesis.plugins</groupId>
+          <artifactId>tools-maven-plugin</artifactId>
+          <version>1.4</version>
+          <configuration>
+            <!-- Fail the build if any artifacts are missing legal files -->
+            <strict>true</strict>
+          </configuration>
+          <executions>
+            <execution>
+              <id>verify-legal-files</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>verify-legal-files</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>3.3.2</version>
         </plugin>
         
         <plugin>
@@ -270,7 +288,7 @@
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.4.45.v20220203</version>
+          <version>11.0.13</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -332,7 +350,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <id>copy-artifact-legal-files</id>
