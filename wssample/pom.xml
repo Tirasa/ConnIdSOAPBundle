@@ -166,7 +166,6 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <inherited>true</inherited>
         <configuration>
-          <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopKey>foo</stopKey>
           <stopPort>9999</stopPort>
 
@@ -185,10 +184,6 @@
             <goals>
               <goal>start-war</goal>
             </goals>
-            <configuration>
-              <scanIntervalSeconds>0</scanIntervalSeconds>
-              <daemon>true</daemon>
-            </configuration>
           </execution>
           <execution>
             <id>stop-jetty</id>

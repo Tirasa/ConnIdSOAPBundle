@@ -156,7 +156,6 @@
         <inherited>true</inherited>
         <configuration>
           <supportedPackagings>jar</supportedPackagings>
-          <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopKey>foo</stopKey>
           <stopPort>9999</stopPort>
 
@@ -176,10 +175,6 @@
             <goals>
               <goal>start-war</goal>
             </goals>
-            <configuration>
-              <scanIntervalSeconds>0</scanIntervalSeconds>
-              <daemon>true</daemon>
-            </configuration>
           </execution>
           <execution>
             <id>stop-jetty</id>
