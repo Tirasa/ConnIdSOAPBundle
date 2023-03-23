@@ -20,7 +20,9 @@ ConnIdSOAPBundle
 
 The SOAP bundle is part of the [ConnId](http://connid.tirasa.net) project.
 
-<a href="https://travis-ci.org/Tirasa/ConnIdSOAPBundle"><img src="https://api.travis-ci.org/Tirasa/ConnIdSOAPBundle.png"/></a>
+<a href="https://github.com/Tirasa/ConnIdSOAPBundle/actions/workflows/ci.yml">
+  <img src="https://github.com/Tirasa/ConnIdSOAPBundle/actions/workflows/ci.yml/badge.svg"/>
+</a>
 <a href="#">
   <img src="https://img.shields.io/maven-central/v/net.tirasa.connid.bundles.soap/net.tirasa.connid.bundles.soap.svg"/>
 </a>
