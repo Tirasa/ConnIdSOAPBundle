@@ -37,6 +37,16 @@ public class WebServiceConnection {
 
     private static Bus bus = null;
 
+    public static void shutdownBus() {
+        synchronized (LOG) {
+            if (bus != null) {
+                bus.shutdown(true);
+                BusFactory.clearDefaultBusForAnyThread(bus);
+                bus = null;
+            }
+        }
+    }
+
     private Provisioning provisioning;
 
     public WebServiceConnection(final WebServiceConfiguration configuration) {
@@ -69,23 +79,22 @@ public class WebServiceConnection {
             }
         }
 
-        final JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
+        JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         factory.setBus(bus);
         factory.setServiceClass(serviceClass);
         factory.setAddress(configuration.getEndpoint());
 
+        factory.getOutInterceptors().add(new ForceSoapActionOutInterceptor(configuration.getSoapActionUriPrefix()));
+
         provisioning = factory.create(Provisioning.class);
 
         try {
-            final Client client = ClientProxy.getClient(provisioning);
+            Client client = ClientProxy.getClient(provisioning);
             if (client != null) {
-                final HTTPConduit conduit = (HTTPConduit) client.getConduit();
-                final HTTPClientPolicy policy = conduit.getClient();
+                HTTPConduit conduit = (HTTPConduit) client.getConduit();
+                HTTPClientPolicy policy = conduit.getClient();
                 policy.setConnectionTimeout(Long.parseLong(configuration.getConnectionTimeout()) * 1000L);
                 policy.setReceiveTimeout(Long.parseLong(configuration.getReceiveTimeout()) * 1000L);
-
-                client.getOutInterceptors().add(
-                        new ForceSoapActionOutInterceptor(configuration.getSoapActionUriPrefix()));
             }
         } catch (Throwable t) {
             LOG.error(t, "Unknown exception");
@@ -97,16 +106,6 @@ public class WebServiceConnection {
      */
     public void dispose() {
         provisioning = null;
-    }
-
-    public static void shutdownBus() {
-        synchronized (LOG) {
-            if (bus != null) {
-                bus.shutdown(true);
-                BusFactory.clearDefaultBusForAnyThread(bus);
-                bus = null;
-            }
-        }
     }
 
     /**

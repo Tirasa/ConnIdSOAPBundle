@@ -33,7 +33,7 @@ public enum AttributeType {
     // Date type is not supported by identityconnectors
     Date("java.lang.String");
 
-    final private String className;
+    private final String className;
 
     private Format formatter;
 
