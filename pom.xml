@@ -23,7 +23,7 @@
   <parent>
     <groupId>net.tirasa.connid</groupId>
     <artifactId>connid</artifactId>
-    <version>1.5.1.0</version>
+    <version>1.5.2.0</version>
   </parent>
 
   <groupId>net.tirasa.connid.bundles.soap</groupId>
@@ -76,17 +76,17 @@
   </mailingLists>
 
   <properties>
-    <connid.version>1.5.1.0</connid.version>
+    <connid.version>1.5.2.0</connid.version>
 
-    <cxf.version>3.5.5</cxf.version>
-    <spring.version>5.3.24</spring.version>
+    <cxf.version>3.5.8</cxf.version>
+    <spring.version>5.3.34</spring.version>
         
-    <hsqldb.version>2.7.1</hsqldb.version>
+    <hsqldb.version>2.7.2</hsqldb.version>
     <dbunit.version>2.7.3</dbunit.version>
 
-    <logback.version>1.2.11</logback.version>
+    <logback.version>1.2.13</logback.version>
 
-    <junit.version>5.9.1</junit.version>
+    <junit.version>5.10.2</junit.version>
 
     <targetJdk>11</targetJdk>
     <rootpom.basedir>${basedir}</rootpom.basedir>
@@ -222,7 +222,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.10.1</version>
+          <version>3.13.0</version>
           <configuration>
             <release>${targetJdk}</release>
             <useIncrementalCompilation>false</useIncrementalCompilation>
@@ -235,26 +235,24 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>3.4.0</version>
         </plugin>
         
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.2</version>
+          <version>3.2.5</version>
           <configuration>
             <redirectTestOutputToFile>true</redirectTestOutputToFile>
-            <encoding>utf-8</encoding>
             <runOrder>alphabetical</runOrder>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.22.2</version>
+          <version>3.2.5</version>
           <configuration>
             <redirectTestOutputToFile>true</redirectTestOutputToFile>
-            <encoding>utf-8</encoding>
             <runOrder>alphabetical</runOrder>
           </configuration>
           <executions>
@@ -270,7 +268,7 @@
         <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.4.45.v20220203</version>
+          <version>9.4.54.v20240208</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -288,7 +286,7 @@
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
-        <version>0.13</version>
+        <version>0.16.1</version>
         <configuration>
           <excludes>
             <exclude>**/nbactions.xml</exclude>
@@ -328,11 +326,53 @@
           </execution>
         </executions>
       </plugin>
-      
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.4.1</version>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireJavaVersion>
+                  <version>${targetJdk}</version>
+                </requireJavaVersion>
+                <requireMavenVersion>
+                  <version>3.9.5</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>      
+
+      <plugin>
+        <groupId>org.gaul</groupId>
+        <artifactId>modernizer-maven-plugin</artifactId>
+        <version>2.8.0</version>
+        <configuration>
+          <javaVersion>${targetJdk}</javaVersion>
+        </configuration>
+        <executions>
+          <execution>
+            <id>modernizer-check</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>modernizer</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.1</version>
         <executions>
           <execution>
             <id>copy-artifact-legal-files</id>
@@ -405,7 +445,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.2.1</version>
+            <version>3.3.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
