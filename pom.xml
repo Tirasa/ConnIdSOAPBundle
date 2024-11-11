@@ -28,7 +28,7 @@
 
   <groupId>net.tirasa.connid.bundles.soap</groupId>
   <artifactId>soap</artifactId>
-  <version>1.5.0-RC1</version>
+  <version>1.5.0-SNAPSHOT</version>
 
   <name>ConnId Bundles: SOAP</name>
 
