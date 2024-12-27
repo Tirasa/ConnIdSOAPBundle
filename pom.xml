@@ -23,7 +23,7 @@
   <parent>
     <groupId>net.tirasa.connid</groupId>
     <artifactId>connid</artifactId>
-    <version>1.6.0.0-RC2</version>
+    <version>1.6.0.0-RC3</version>
   </parent>
 
   <groupId>net.tirasa.connid.bundles.soap</groupId>
@@ -76,7 +76,7 @@
   </mailingLists>
 
   <properties>
-    <connid.version>1.6.0.0-RC2</connid.version>
+    <connid.version>1.6.0.0-RC3</connid.version>
 
     <cxf.version>4.1.0</cxf.version>
     <spring.version>6.1.16</spring.version>
