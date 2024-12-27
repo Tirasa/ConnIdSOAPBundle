@@ -49,7 +49,7 @@
     <connection>scm:git:git@github.com:Tirasa/ConnIdSOAPBundle.git</connection>
     <url>scm:git:git@github.com:Tirasa/ConnIdSOAPBundle.git</url>
     <developerConnection>scm:git:git@github.com:Tirasa/ConnIdSOAPBundle.git</developerConnection>
-    <tag>soap-1.5.0-RC1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
