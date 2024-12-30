@@ -24,6 +24,7 @@ import static org.springframework.test.util.AssertionErrors.fail;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -91,11 +92,11 @@ public class SOAPTestITCase {
         assertNotNull(bundleversion);
         assertNotNull(bundledirectory);
 
-        final File bundleDirectory = new File(bundledirectory);
+        final File bundleDirectory = Path.of(bundledirectory).toFile();
         final List<URL> urls = new ArrayList<>();
         for (String filename : bundleDirectory.list((file, name) -> name.endsWith("-bundle.jar"))) {
             try {
-                urls.add(IOUtil.makeURL(bundleDirectory, filename));
+                urls.add(IOUtil.makeURL(bundleDirectory.toPath(), filename));
             } catch (IOException ignore) {
                 // ignore exception and don't add bundle
                 LOG.warn(ignore, "\"" + bundleDirectory.toString() + "/" + filename + "\""
@@ -106,8 +107,7 @@ public class SOAPTestITCase {
         LOG.ok("URL: " + urls.toString());
 
         final ConnectorInfoManagerFactory connectorInfoManagerFactory = ConnectorInfoManagerFactory.getInstance();
-        final ConnectorInfoManager manager =
-                connectorInfoManagerFactory.getLocalManager(urls.toArray(new URL[urls.size()]));
+        final ConnectorInfoManager manager = connectorInfoManagerFactory.getLocalManager(urls.toArray(URL[]::new));
         assertNotNull(manager);
 
         // list connectors info
