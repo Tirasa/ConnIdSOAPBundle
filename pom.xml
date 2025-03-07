@@ -28,7 +28,7 @@
 
   <groupId>net.tirasa.connid.bundles.soap</groupId>
   <artifactId>soap</artifactId>
-  <version>1.5.0-SNAPSHOT</version>
+  <version>1.5.0</version>
 
   <name>ConnId Bundles: SOAP</name>
 
@@ -49,7 +49,7 @@
     <connection>scm:git:git@github.com:Tirasa/ConnIdSOAPBundle.git</connection>
     <url>scm:git:git@github.com:Tirasa/ConnIdSOAPBundle.git</url>
     <developerConnection>scm:git:git@github.com:Tirasa/ConnIdSOAPBundle.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>soap-1.5.0</tag>
   </scm>
 
   <issueManagement>
