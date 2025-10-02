@@ -63,7 +63,7 @@
   </ciManagement>
 
   <properties>
-    <connid.version>1.6.0.1</connid.version>
+    <connid.version>1.6.1.0</connid.version>
 
     <cxf.version>4.1.3</cxf.version>
     <spring.version>6.2.11</spring.version>
