@@ -71,7 +71,7 @@
     <hsqldb.version>2.7.4</hsqldb.version>
     <dbunit.version>3.0.0</dbunit.version>
 
-    <logback.version>1.5.18</logback.version>
+    <logback.version>1.5.19</logback.version>
 
     <junit.version>5.11.4</junit.version>
 
