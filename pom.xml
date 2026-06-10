@@ -66,7 +66,7 @@
     <connid.version>1.6.1.0</connid.version>
 
     <cxf.version>4.2.1</cxf.version>
-    <spring.version>6.2.18</spring.version>
+    <spring.version>6.2.19</spring.version>
 
     <hsqldb.version>2.7.4</hsqldb.version>
     <dbunit.version>3.2.0</dbunit.version>
