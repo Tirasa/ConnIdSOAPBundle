@@ -15,7 +15,6 @@
  */
 package net.tirasa.connid.bundles.soap.cxf;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -83,7 +82,7 @@ public class ForceSoapActionOutInterceptor extends AbstractSoapInterceptor {
             }
 
             if (!reqHeaders.containsKey(SoapBindingConstants.SOAP_ACTION)) {
-                reqHeaders.put(SoapBindingConstants.SOAP_ACTION, Collections.singletonList(action));
+                reqHeaders.put(SoapBindingConstants.SOAP_ACTION, List.of(action));
             }
         } else if (message.getVersion() instanceof Soap12 && !"\"\"".equals(action)) {
             String contentType = (String) message.get(Message.CONTENT_TYPE);
